@@ -332,7 +332,7 @@
       count.className = 'result-count';
       count.textContent = absCount;
       if(absCount > 0){
-        container.appendChild("x");
+        count.textContent = "x" + count.textContent;
       }
       container.appendChild(count);
     }
