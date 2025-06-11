@@ -1,0 +1,467 @@
+<!DOCTYPE html> <!-- Указывает, что документ написан на HTML5 -->
+<html lang="ru"> <!-- Язык содержимого страницы — русский -->
+
+<head>
+  <meta charset="UTF-8" /> <!-- Кодировка: поддержка кириллицы и эмодзи -->
+  <meta name="viewport" content="width=device-width,initial-scale=1" /> <!-- Адаптивность для телефонов -->
+  <title>Счётчик со звёздами</title> <!-- Заголовок вкладки браузера -->
+
+  <style>
+    /* ======= ОСНОВНЫЕ СТИЛИ ======= */
+    body {
+      font-family: sans-serif; /* Стандартный шрифт */
+      text-align: center; /* Центрируем текст */
+      background: #f9f9f9; /* Цвет фона */
+      margin: 0;
+      padding: 30px 10px;
+    }
+    .text-cell {
+      width: 100%;
+    }
+    .container {
+      display: flex; /* Горизонтальное расположение элементов */
+      justify-content: center; /* Центрирование по ширине */
+      align-items: center; /* Центрирование по высоте */
+      gap: 0;
+      flex-wrap: nowrap;
+      overflow-x: auto; /* Прокрутка при переполнении */
+      position: relative;
+      height: 100px;
+    }
+
+    .circle {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%; /* Делаем круг */
+      background: #eee; /* Светлый фон */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      line-height: 48px;
+      margin-left: -30px; /* Перекрытие элементов */
+      box-shadow: 0 0 4px rgba(0, 0, 0, 0.2); /* Тень */
+      position: relative;
+      z-index: 1;
+    }
+
+    .circle:first-child {
+      margin-left: 0; /* Первый круг не перекрывается */
+    }
+
+    .form-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: nowrap;
+      margin: 10px 0;
+      position: relative;
+    }
+
+    .form-row input[type="text"] {
+      font-size: 16px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      width: 100%;
+      flex: 1; /* Растягивается */
+    }
+
+    .form-row input[type="number"] {
+      font-size: 16px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      width: 40px;
+      text-align: center;
+    }
+
+    .form-row .emoji-option {
+      flex-shrink: 0;
+      cursor: pointer;
+      padding: 5px;
+      border-radius: 50%;
+    }
+
+    .form-row .emoji-option.selected {
+      border: 2px solid #4caf50; /* Зелёная рамка */
+      box-shadow: 0 0 5px rgba(76, 175, 80, 0.5); /* Светящаяся тень */
+    }
+
+    .form-row button {
+      font-size: 24px;
+      padding: 6px 15px;
+      border-radius: 50%;
+      border: none;
+      background: #dcdcdc;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .form-row button:hover {
+      background: #ccc;
+    }
+
+    #entryList {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      border: none;
+    }
+
+    #entryList th,
+    #entryList td {
+      border: none;
+      padding: 8px;
+      text-align: left;
+    }
+
+    #entryList th {
+      background-color: #f4f4f4;
+      font-weight: bold;
+    }
+
+    #entryList .emoji-cell {
+      white-space: nowrap;
+      text-align: center;
+      width: 1%;
+    }
+
+    #entryList .emoji-cell .circle {
+      width: 24px;
+      height: 24px;
+      font-size: 16px;
+      line-height: 24px;
+      margin-left: -12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: #eee;
+      box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+    }
+
+    #entryList .emoji-cell .circle:first-child {
+      margin-left: 0;
+    }
+
+    .result-count {
+      margin-left: 16px;
+      font-size: 40px !important;
+      font-weight: bold;
+      color: black !important;
+    }
+
+    .autocomplete-list {
+      position: absolute;
+      left: 0;
+      top: 100%; /* Под input'ом */
+      margin-top: 2px;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      max-height: 160px;
+      overflow-y: auto;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      min-width: 180px;
+    }
+
+    .autocomplete-item {
+      padding: 6px 10px;
+      cursor: pointer;
+    }
+
+    .autocomplete-item:hover,
+    .autocomplete-item.active {
+      background: #f0f0f0;
+    }
+
+    /* ======= МЕДИА-СТИЛИ для телефонов ======= */
+    @media (max-width: 600px) {
+      body {
+        padding: 10px 2px;
+      }
+
+      .container {
+        height: auto;
+        flex-wrap: wrap;
+        min-height: 60px;
+      }
+
+      .circle {
+        width: 48px;
+        height: 48px;
+        font-size: 24px;
+        line-height: 48px;
+        margin-left: -30px;
+      }
+
+      .form-row {
+        flex-wrap: wrap;
+        gap: 4px;
+        margin: 6px 0;
+      }
+
+      .form-row input[type="text"] {
+        font-size: 15px;
+        padding: 5px 8px;
+        width: 100%;
+        max-width: 100%;
+      }
+
+      .form-row input[type="number"] {
+        font-size: 15px;
+        padding: 5px 8px;
+        width: 38px;
+      }
+
+      .form-row button {
+        font-size: 18px;
+        padding: 5px 10px;
+      }
+
+      .emoji-option {
+        font-size: 18px;
+        padding: 4px;
+      }
+
+      #entryList {
+        font-size: 13px;
+        margin-top: 6px;
+        display: block;
+        overflow-x: auto;
+        width: 100vw;
+        min-width: 320px;
+      }
+
+      #entryList th,
+      #entryList td {
+        font-size: 13px;
+        padding: 5px;
+        min-width: 60px;
+        word-break: break-word;
+      }
+
+      #entryList .emoji-cell .circle {
+        width: 18px;
+        height: 18px;
+        font-size: 12px;
+        line-height: 18px;
+        margin-left: -7px;
+      }
+
+      #entryList .emoji-cell .circle:first-child {
+        margin-left: 0;
+      }
+
+      .result-count {
+        font-size: 48px;
+        margin-left: 8px;
+      }
+
+      .autocomplete-list {
+        min-width: 120px;
+        font-size: 14px;
+        max-height: 100px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Блок отображения общего счёта -->
+  <div class="container" id="resultDisplay"></div>
+
+  <h2>Добавить запись</h2>
+  <div class="form-row">
+    <!-- Ввод имени записи -->
+    <input type="text" id="entryName" autocomplete="off" />
+    <!-- Подсказки при вводе -->
+    <div id="autocompleteList" class="autocomplete-list" style="display:none"></div>
+    <!-- Количество -->
+    <input type="number" id="entryCount" value="1" min="1" />
+    <!-- Эмодзи звезда -->
+    <div class="emoji-option" data-type="star" onclick="selectEmoji('star')">⭐</div>
+    <!-- Эмодзи злость -->
+    <div class="emoji-option" data-type="x" onclick="selectEmoji('x')">😡</div>
+    <!-- Кнопка добавления -->
+    <button id="saveBtn">+</button>
+  </div>
+
+  <!-- Заголовок + кнопка очистки -->
+  <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+    <h2>История</h2>
+    <button id="clearHistoryBtn">🗑️</button>
+  </div>
+
+  <!-- Таблица с историями -->
+  <table id="entryList"></table>
+
+  <script>
+    // Загружаем данные из localStorage
+    let entries = JSON.parse(localStorage.getItem('entries') || '[]');
+    let counter = parseInt(localStorage.getItem('counter') || '0', 10);
+    let selectedEmojiType = 'star';
+    let nameSuggestions = JSON.parse(localStorage.getItem('nameSuggestions') || '[]');
+
+    // Создание круга с эмодзи
+    function createCircle(type, zIndex) {
+      const circle = document.createElement('div');
+      circle.className = 'circle';
+      circle.textContent = type === 'star' ? '⭐' : '😡';
+      circle.style.backgroundColor = type === 'star' ? '#fff8dc' : '#ffeaea';
+      circle.style.zIndex = zIndex;
+      return circle;
+    }
+
+    // Обновление отображения результата
+    function updateResult() {
+      const container = document.getElementById('resultDisplay');
+      container.innerHTML = '';
+
+      const absCount = Math.abs(counter);
+      const type = counter >= 0 ? 'star' : 'x';
+
+      for (let i = 0; i < absCount; i++) {
+        container.appendChild(createCircle(type, i + 1));
+      }
+
+      const count = document.createElement('div');
+      count.className = 'result-count';
+      count.textContent = absCount;
+      container.appendChild(count);
+    }
+
+    // Рисуем таблицу истории
+    function renderList() {
+      const list = document.getElementById('entryList');
+      list.innerHTML = `
+        <thead><tr><th>Дата</th><th class="text-cell">Название</th><th class="emoji-cell">Эмодзи</th></tr></thead>
+        <tbody>
+        ${entries.slice().reverse().map(e => `
+          <tr>
+            <td>${e.date}</td>
+            <td class="text-cell">${e.name}</td>
+            <td class="emoji-cell">
+              ${Array(e.count).fill(`<div class="circle">${e.type === 'star' ? '⭐' : '😡'}</div>`).join('')}
+            </td>
+          </tr>
+        `).join('')}
+        </tbody>
+      `;
+    }
+
+    // Выбор эмодзи
+    function selectEmoji(type) {
+      selectedEmojiType = type;
+      document.querySelectorAll('.emoji-option').forEach(el => el.classList.remove('selected'));
+      document.querySelector(`.emoji-option[data-type="${type}"]`).classList.add('selected');
+    }
+
+    // Сохранение имени для автозаполнения
+    function saveNameSuggestion(name) {
+      if (!name) return;
+      if (!nameSuggestions.includes(name)) {
+        nameSuggestions.push(name);
+        localStorage.setItem('nameSuggestions', JSON.stringify(nameSuggestions));
+      }
+    }
+
+    // Подсказки при вводе
+    function showAutocompleteList(value) {
+      const list = document.getElementById('autocompleteList');
+      if (!value) return (list.style.display = 'none', list.innerHTML = '');
+      const matches = nameSuggestions.filter(n => n.toLowerCase().includes(value.toLowerCase()));
+      if (!matches.length) return (list.style.display = 'none', list.innerHTML = '');
+      list.innerHTML = matches.map((n, i) => `<div class="autocomplete-item">${n}</div>`).join('');
+      list.style.display = 'block';
+    }
+
+    function hideAutocompleteList() {
+      document.getElementById('autocompleteList').style.display = 'none';
+    }
+
+    document.getElementById('entryName').addEventListener('input', e => showAutocompleteList(e.target.value));
+    document.getElementById('entryName').addEventListener('blur', () => setTimeout(hideAutocompleteList, 150));
+    document.getElementById('autocompleteList').addEventListener('mousedown', e => {
+      if (e.target.classList.contains('autocomplete-item')) {
+        document.getElementById('entryName').value = e.target.textContent;
+        hideAutocompleteList();
+      }
+    });
+
+    // Поддержка стрелок вверх/вниз и Enter
+    document.getElementById('entryName').addEventListener('keydown', function (e) {
+      const list = document.getElementById('autocompleteList');
+      const items = [...list.querySelectorAll('.autocomplete-item')];
+      let idx = items.findIndex(item => item.classList.contains('active'));
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        if (idx >= 0) items[idx].classList.remove('active');
+        idx = (idx + 1) % items.length;
+        items[idx].classList.add('active');
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (idx >= 0) items[idx].classList.remove('active');
+        idx = (idx - 1 + items.length) % items.length;
+        items[idx].classList.add('active');
+      } else if (e.key === 'Enter' && idx >= 0) {
+        this.value = items[idx].textContent;
+        hideAutocompleteList();
+        e.preventDefault();
+      }
+    });
+
+    // Добавление новой записи
+    function addEntry() {
+      const name = document.getElementById('entryName').value.trim();
+      const cnt = parseInt(document.getElementById('entryCount').value, 10);
+      if (!name || isNaN(cnt) || cnt < 1 || !selectedEmojiType) {
+        alert('Введите название, число (1+) и выберите тип эмодзи.');
+        return;
+      }
+
+      saveNameSuggestion(name);
+      const type = selectedEmojiType;
+      const now = new Date();
+      const date = `${now.getDate()}.${now.getMonth() + 1}`;
+
+      entries.push({ name, type, count: cnt, date });
+      counter += type === 'star' ? cnt : -cnt;
+
+      saveAndRefresh();
+      selectEmoji('star'); // Сброс выбора
+    }
+
+    // Очистка истории
+    function clearHistory() {
+      if (confirm('Вы уверены, что хотите очистить историю?')) {
+        entries = [];
+        localStorage.removeItem('entries');
+        renderList();
+      }
+    }
+
+    // Сохраняем в localStorage и обновляем интерфейс
+    function saveAndRefresh() {
+      localStorage.setItem('entries', JSON.stringify(entries));
+      localStorage.setItem('counter', counter.toString());
+      document.getElementById('entryName').value = '';
+      document.getElementById('entryCount').value = '1';
+      renderList();
+      updateResult();
+    }
+
+    // Связываем кнопки
+    document.getElementById('saveBtn').onclick = addEntry;
+    document.getElementById('clearHistoryBtn').onclick = clearHistory;
+
+    // Инициализация
+    selectEmoji('star');
+    renderList();
+    updateResult();
+  </script>
+</body>
+</html>
