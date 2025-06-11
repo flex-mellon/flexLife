@@ -331,6 +331,9 @@
       const count = document.createElement('div');
       count.className = 'result-count';
       count.textContent = absCount;
+      if(absCount > 0){
+        container.appendChild("x")
+      }
       container.appendChild(count);
     }
 
