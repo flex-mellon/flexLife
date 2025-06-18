@@ -1,43 +1,48 @@
-<!DOCTYPE html> <!-- Указывает, что документ написан на HTML5 -->
-<html lang="ru"> <!-- Язык содержимого страницы — русский -->
+<!DOCTYPE html>
+<!-- Указывает, что документ написан на HTML5 -->
+<html lang="ru">
+<!-- Язык содержимого страницы — русский -->
 
 <head>
-  <meta charset="UTF-8" /> <!-- Кодировка: поддержка кириллицы и эмодзи -->
-  <meta name="viewport" content="width=device-width,initial-scale=1" /> <!-- Адаптивность для телефонов -->
-  <title>Счётчик со звёздами</title> <!-- Заголовок вкладки браузера -->
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8" />
+    <!-- Кодировка: поддержка кириллицы и эмодзи -->
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <!-- Адаптивность для телефонов -->
+    <title>Счётчик со звёздами</title>
+    <!-- Заголовок вкладки браузера -->
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-  <!-- Блок отображения общего счёта -->
-  <div class="container" id="resultDisplay"></div>
+    <!-- Блок отображения общего счёта   -->
+    <div class="container" id="resultDisplay"></div>
 
-  <h2>Добавить запись</h2>
-  <div class="form-row">
-    <!-- Ввод имени записи -->
-    <input type="text" id="entryName" autocomplete="off" />
-    <!-- Подсказки при вводе -->
-    <div id="autocompleteList" class="autocomplete-list" style="display:none"></div>
-    <!-- Количество -->
-    <input type="number" id="entryCount" value="1" min="1" />
-    <!-- Эмодзи звезда -->
-    <div class="emoji-option" data-type="star" onclick="selectEmoji('star')">⭐</div>
-    <!-- Эмодзи злость -->
-    <div class="emoji-option" data-type="x" onclick="selectEmoji('x')">😡</div>
-    <!-- Кнопка добавления -->
-    <button id="saveBtn">+</button>
-  </div>
+    <h2>Добавить запись</h2>
+    <div class="form-row">
+        <!-- Ввод имени записи -->
+        <input type="text" id="entryName" autocomplete="off" />
+        <!-- Подсказки при вводе -->
+        <div id="autocompleteList" class="autocomplete-list" style="display:none"></div>
+        <!-- Количество -->
+        <input type="number" id="entryCount" value="1" min="1" />
+        <!-- Эмодзи звезда -->
+        <div class="emoji-option" data-type="star" onclick="selectEmoji('star')">⭐</div>
+        <!-- Эмодзи злость -->
+        <div class="emoji-option" data-type="x" onclick="selectEmoji('x')">😡</div>
+        <!-- Кнопка добавления -->
+        <button id="saveBtn">+</button>
+    </div>
 
-  <!-- Заголовок + кнопка очистки -->
-  <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-    <h2>История</h2>
-    <button id="clearHistoryBtn">🗑️</button>
-  </div>
+    <!-- Заголовок + кнопка очистки -->
+    <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+        <h2>История</h2>
+        <button id="clearHistoryBtn">🗑️</button>
+    </div>
 
-  <!-- Таблица с историями -->
-  <table id="entryList"></table>
+    <!-- Таблица с историями -->
+    <table id="entryList"></table>
 
-  <script src="scripts.js"></script>
+    <script src="scripts.js"></script>
 </body>
 
 </html>
