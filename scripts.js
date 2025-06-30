@@ -1,16 +1,21 @@
 
 let entries = JSON.parse(localStorage.getItem('entries') || '[]');
-let counter = parseInt(localStorage.getItem('counter') || '0', 10);
+let counter = parseFloat(localStorage.getItem('counter') || '0');
 let selectedEmojiType = 'star';
 let nameSuggestions = JSON.parse(localStorage.getItem('nameSuggestions') || '[]');
 
 // Создание круга с эмодзи
-function createCircle(type, zIndex) {
+function createCircle(type, zIndex, half = false, opacity = 1) {
     const circle = document.createElement('div');
     circle.className = 'circle';
-    circle.textContent = type === 'star' ? '⭐' : '😡';
     circle.style.backgroundColor = type === 'star' ? '#fff8dc' : '#ffeaea';
     circle.style.zIndex = zIndex;
+
+    const emoji = document.createElement('span');
+    emoji.textContent = type === 'star' ? '⭐' : '😡';
+    emoji.style.opacity = opacity;
+    circle.appendChild(emoji);
+
     return circle;
 }
 
@@ -22,13 +27,23 @@ function updateResult() {
     const absCount = Math.abs(counter);
     const type = counter >= 0 ? 'star' : 'x';
 
-    for (let i = 0; i < absCount; i++) {
+    // Показываем только одну цифру после запятой
+    const displayCount = absCount.toFixed(1);
+
+    // Целая и дробная часть
+    const intPart = Math.floor(absCount);
+    const fracPart = absCount - intPart;
+
+    for (let i = 0; i < intPart; i++) {
         container.appendChild(createCircle(type, i + 1));
+    }
+    if (fracPart >= 0.05) {
+        container.appendChild(createCircle(type, intPart + 1, false, fracPart));
     }
 
     const count = document.createElement('div');
     count.className = 'result-count';
-    count.textContent = absCount;
+    count.textContent = displayCount;
     if (absCount > 0) {
         count.textContent = "x" + count.textContent;
     }
@@ -41,15 +56,26 @@ function renderList() {
     list.innerHTML = `
         <thead><tr><th>Дата</th><th class="text-cell">Название</th><th class="emoji-cell">Эмодзи</th></tr></thead>
         <tbody>
-        ${entries.slice().reverse().map(e => `
-          <tr>
-            <td>${e.date}</td>
-            <td class="text-cell">${e.name}</td>
-            <td class="emoji-cell">
-              ${Array(e.count).fill(`<div class="circle">${e.type === 'star' ? '⭐' : '😡'}</div>`).join('')}
-            </td>
-          </tr>
-        `).join('')}
+        ${entries.slice().reverse().map(e => {
+            const intPart = Math.floor(Math.abs(e.count));
+            const fracPart = Math.abs(e.count) - intPart;
+            let icons = '';
+            for (let i = 0; i < intPart; i++) {
+                icons += `<div class="circle"><span style="opacity:1">${e.type === 'star' ? '⭐' : '😡'}</span></div>`;
+            }
+            if (fracPart >= 0.05) {
+                icons += `<div class="circle"><span style="opacity:${fracPart}">${e.type === 'star' ? '⭐' : '😡'}</span></div>`;
+            }
+            return `
+              <tr>
+                <td>${e.date}</td>
+                <td class="text-cell">${e.name}</td>
+                <td class="emoji-cell">
+                  ${icons}
+                </td>
+              </tr>
+            `;
+        }).join('')}
         </tbody>
       `;
 }
@@ -118,9 +144,9 @@ document.getElementById('entryName').addEventListener('keydown', function (e) {
 // Добавление новой записи
 function addEntry() {
     const name = document.getElementById('entryName').value.trim();
-    const cnt = parseInt(document.getElementById('entryCount').value, 10);
-    if (!name || isNaN(cnt) || cnt < 1 || !selectedEmojiType) {
-        alert('Введите название, число (1+) и выберите тип эмодзи.');
+    const cnt = parseFloat(document.getElementById('entryCount').value.replace(',', '.'));
+    if (!name || isNaN(cnt) || cnt < 0.1 || !selectedEmojiType) {
+        alert('Введите название, число (0.1+) и выберите тип эмодзи.');
         return;
     }
 
