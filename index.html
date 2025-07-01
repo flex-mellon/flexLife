@@ -35,6 +35,10 @@
 
     <!-- Заголовок + кнопка очистки -->
     <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+        <button id="exportHistoryBtn" title="Экспорт истории"
+            style="font-size:20px; background:none; border:none; cursor:pointer;">📤</button>
+        <button id="resetCounterBtn" title="Сбросить счётчик"
+            style="font-size:20px; background:none; border:none; cursor:pointer;">🔄</button>
         <h2>История</h2>
         <button id="clearHistoryBtn">🗑️</button>
     </div>
@@ -43,6 +47,16 @@
     <table id="entryList"></table>
 
     <script src="scripts.js"></script>
+    <!-- Модальное окно для информации об эмодзи -->
+    <div id="emojiInfoModal"
+        style="display:none; position:fixed; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.3); align-items:center; justify-content:center; z-index:999;">
+        <div
+            style="background:#fff; padding:24px 18px; border-radius:12px; min-width:220px; text-align:center; position:relative;">
+            <button id="closeEmojiInfoModal"
+                style="position:absolute; right:8px; top:8px; background:none; border:none; font-size:18px; cursor:pointer;">✖</button>
+            <div id="emojiInfoContent"></div>
+        </div>
+    </div>
 </body>
 
 </html>

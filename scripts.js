@@ -1,6 +1,7 @@
 
 let entries = JSON.parse(localStorage.getItem('entries') || '[]');
-let counter = parseFloat(localStorage.getItem('counter') || '0');
+let counter = parseFloat(localStorage.getItem('counter'));
+if (isNaN(counter)) counter = 0;
 let selectedEmojiType = 'star';
 let nameSuggestions = JSON.parse(localStorage.getItem('nameSuggestions') || '[]');
 
@@ -34,50 +35,98 @@ function updateResult() {
     const intPart = Math.floor(absCount);
     const fracPart = absCount - intPart;
 
+    let icons = '';
     for (let i = 0; i < intPart; i++) {
-        container.appendChild(createCircle(type, i + 1));
+        icons += `<div class="circle" style="display:inline-block;"><span style="opacity:1">${type === 'star' ? '⭐' : '😡'}</span></div>`;
     }
     if (fracPart >= 0.05) {
-        container.appendChild(createCircle(type, intPart + 1, false, fracPart));
+        icons += `<div class="circle" style="display:inline-block;"><span style="opacity:${fracPart}">${type === 'star' ? '⭐' : '😡'}</span></div>`;
     }
 
-    const count = document.createElement('div');
-    count.className = 'result-count';
-    count.textContent = displayCount;
+    container.innerHTML = icons;
+
+    const countDiv = document.createElement('div');
+    countDiv.className = 'result-count';
+    countDiv.textContent = displayCount;
     if (absCount > 0) {
-        count.textContent = "x" + count.textContent;
+        countDiv.textContent = "x" + countDiv.textContent;
     }
-    container.appendChild(count);
+    // Добавляем обработчик для модального окна
+    countDiv.style.cursor = 'pointer';
+    countDiv.onclick = function () {
+        // Для счётчика: количество целых + дробная часть (одна цифра после точки)
+        showEmojiInfo(intPart + (fracPart >= 0.05 ? 1 : 0), fracPart >= 0.05 ? Math.round(fracPart * 10) : 10, type);
+    };
+    container.appendChild(countDiv);
 }
 
 // Рисуем таблицу истории
 function renderList() {
     const list = document.getElementById('entryList');
     list.innerHTML = `
-        <thead><tr><th>Дата</th><th class="text-cell">Название</th><th class="emoji-cell">Эмодзи</th></tr></thead>
+        <thead>
+            <tr>
+                <th>Дата</th>
+                <th class="text-cell">Название</th>
+                <th class="emoji-cell">Эмодзи</th>
+                <th></th>
+            </tr>
+        </thead>
         <tbody>
-        ${entries.slice().reverse().map(e => {
-            const intPart = Math.floor(Math.abs(e.count));
-            const fracPart = Math.abs(e.count) - intPart;
-            let icons = '';
-            for (let i = 0; i < intPart; i++) {
-                icons += `<div class="circle"><span style="opacity:1">${e.type === 'star' ? '⭐' : '😡'}</span></div>`;
-            }
-            if (fracPart >= 0.05) {
-                icons += `<div class="circle"><span style="opacity:${fracPart}">${e.type === 'star' ? '⭐' : '😡'}</span></div>`;
-            }
-            return `
+        ${entries.slice().reverse().map((e, idx) => {
+        const intPart = Math.floor(Math.abs(e.count));
+        const fracPart = Math.abs(e.count) - intPart;
+        let icons = '';
+        for (let i = 0; i < intPart; i++) {
+            icons += `<div class="circle"><span style="opacity:1">${e.type === 'star' ? '⭐' : '😡'}</span></div>`;
+        }
+        if (fracPart >= 0.05) {
+            icons += `<div class="circle"><span style="opacity:${fracPart}">${e.type === 'star' ? '⭐' : '😡'}</span></div>`;
+        }
+        // Индекс для удаления с учётом reverse
+        const realIdx = entries.length - 1 - idx;
+        return `
               <tr>
                 <td>${e.date}</td>
-                <td class="text-cell">${e.name}</td>
-                <td class="emoji-cell">
-                  ${icons}
+                <td class="text-cell">
+                  <span class="history-name" 
+                        data-count="${intPart + (fracPart >= 0.05 ? 1 : 0)}" 
+                        data-opacity="${fracPart >= 0.05 ? Math.round(fracPart * 10) : 10}" 
+                        data-type="${e.type}" 
+                        style="cursor:pointer; text-decoration:underline; color:#1976d2;">
+                    ${e.name}
+                  </span>
+                </td>
+                <td class="emoji-cell">${icons}</td>
+                <td>
+                  <button class="delete-entry-btn" data-idx="${realIdx}" title="Удалить" style="background:none;border:none;cursor:pointer;font-size:18px;">🗑️</button>
                 </td>
               </tr>
             `;
-        }).join('')}
+    }).join('')}
         </tbody>
       `;
+
+    // Обработчик для названия
+    list.querySelectorAll('.delete-entry-btn').forEach(btn => {
+        btn.onclick = function () {
+            const idx = parseInt(this.dataset.idx, 10);
+            const entry = entries[idx];
+            if (!entry) return;
+
+            // 1. Подтверждение удаления
+            if (!confirm('Вы уверены, что хотите удалить эту запись?')) return;
+
+            // 2. Второй диалог
+            if (confirm('Повлияет ли это на общий счётчик?')) {
+                // Да — изменить счётчик
+                counter += entry.type === 'star' ? -entry.count : entry.count;
+            }
+            // В любом случае удаляем запись
+            entries.splice(idx, 1);
+            saveAndRefresh();
+        };
+    });
 }
 
 // Выбор эмодзи
@@ -181,9 +230,50 @@ function saveAndRefresh() {
     updateResult();
 }
 
+function showEmojiInfo(count, opacityLevel, type) {
+    if (opacityLevel > 0 && opacityLevel != 10) {
+        //alert(count + " h " + opacityLevel)
+        count = count - 1
+    }
+    //opacityLevel
+    let value = opacityLevel === 10 ? `${count}` : `${count}.${opacityLevel}`;
+    document.getElementById('emojiInfoContent').textContent = value;
+    document.getElementById('emojiInfoModal').style.display = 'flex';
+}
+
+// Закрыть модальное окно
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('closeEmojiInfoModal').onclick = function () {
+        document.getElementById('emojiInfoModal').style.display = 'none';
+    };
+    document.getElementById('emojiInfoModal').onclick = function (e) {
+        if (e.target === this) this.style.display = 'none';
+    };
+});
+
+
 // Связываем кнопки
 document.getElementById('saveBtn').onclick = addEntry;
 document.getElementById('clearHistoryBtn').onclick = clearHistory;
+document.getElementById('resetCounterBtn').onclick = function () {
+    if (confirm('Сбросить общий счётчик на 0?')) {
+        counter = 0;
+        localStorage.setItem('counter', '0');
+        updateResult();
+    }
+};
+document.getElementById('exportHistoryBtn').onclick = function () {
+    const data = JSON.stringify(entries, null, 2);
+    const blob = new Blob([data], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'history.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+};
 
 // Инициализация
 selectEmoji('star');

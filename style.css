@@ -1,259 +1,285 @@
  body {
-      font-family: sans-serif; /* Стандартный шрифт */
-      text-align: center; /* Центрируем текст */
-      background: #f9f9f9; /* Цвет фона */
-      margin: 0;
-      padding: 30px 11px;
-    }
-    .text-cell {
-      width: 100%;
-    }
-    .container {
-      display: flex; /* Горизонтальное расположение элементов */
-      justify-content: center; /* Центрирование по ширине */
-      align-items: center; /* Центрирование по высоте */
-      gap: 0;
-      flex-wrap: nowrap;
-      overflow-x: auto; /* Прокрутка при переполнении */
-      position: relative;
-      height: 100px;
-    }
+   font-family: sans-serif;
+   /* Стандартный шрифт */
+   text-align: center;
+   /* Центрируем текст */
+   background: #f9f9f9;
+   /* Цвет фона */
+   margin: 0;
+   padding: 30px 11px;
+ }
 
-    .circle {
-      width: 64px;
-      height: 64px;
-      border-radius: 50%; /* Делаем круг */
-      background: #eee; /* Светлый фон */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 48px;
-      line-height: 48px;
-      margin-left: -30px; /* Перекрытие элементов */
-      box-shadow: 0 0 4px rgba(0, 0, 0, 0.2); /* Тень */
-      position: relative;
-      z-index: 1;
-    }
+ .text-cell {
+   width: 100%;
+ }
 
-    .circle:first-child {
-      margin-left: 0; /* Первый круг не перекрывается */
-    }
+ .container {
+   display: flex;
+   /* Горизонтальное расположение элементов */
+   justify-content: center;
+   /* Центрирование по ширине */
+   align-items: center;
+   /* Центрирование по высоте */
+   gap: 0;
+   flex-wrap: nowrap;
+   overflow-x: auto;
+   /* Прокрутка при переполнении */
+   position: relative;
+   height: 100px;
+ }
 
-    .form-row {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      flex-wrap: nowrap;
-      margin: 10px 0;
-      position: relative;
-    }
+ .circle {
+   width: 64px;
+   height: 64px;
+   border-radius: 50%;
+   /* Делаем круг */
+   background: #eee;
+   /* Светлый фон */
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   font-size: 48px;
+   line-height: 48px;
+   margin-left: -30px;
+   /* Перекрытие элементов */
+   box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+   /* Тень */
+   position: relative;
+   z-index: 1;
+ }
 
-    .form-row input[type="text"] {
-      font-size: 16px;
-      padding: 6px 10px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      width: 100%;
-      flex: 1; /* Растягивается */
-    }
+ .circle span {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   width: 100%;
+   height: 100%;
+ }
 
-    .form-row input[type="number"] {
-      font-size: 16px;
-      padding: 6px 10px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      width: 40px;
-      text-align: center;
-    }
+ .circle:first-child {
+   margin-left: 0;
+   /* Первый круг не перекрывается */
+ }
 
-    .form-row .emoji-option {
-      flex-shrink: 0;
-      cursor: pointer;
-      padding: 5px;
-      border-radius: 50%;
-    }
+ .form-row {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   gap: 10px;
+   flex-wrap: nowrap;
+   margin: 10px 0;
+   position: relative;
+ }
 
-    .form-row .emoji-option.selected {
-      border: 2px solid #4caf50; /* Зелёная рамка */
-      box-shadow: 0 0 5px rgba(76, 175, 80, 0.5); /* Светящаяся тень */
-    }
+ .form-row input[type="text"] {
+   font-size: 16px;
+   padding: 6px 10px;
+   border-radius: 6px;
+   border: 1px solid #ccc;
+   width: 100%;
+   flex: 1;
+   /* Растягивается */
+ }
 
-    .form-row button {
-      font-size: 24px;
-      padding: 6px 15px;
-      border-radius: 50%;
-      border: none;
-      background: #dcdcdc;
-      cursor: pointer;
-      flex-shrink: 0;
-    }
+ .form-row input[type="number"] {
+   font-size: 16px;
+   padding: 6px 10px;
+   border-radius: 6px;
+   border: 1px solid #ccc;
+   width: 40px;
+   text-align: center;
+ }
 
-    .form-row button:hover {
-      background: #ccc;
-    }
+ .form-row .emoji-option {
+   flex-shrink: 0;
+   cursor: pointer;
+   padding: 5px;
+   border-radius: 50%;
+ }
 
-    #entryList {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-      border: none;
-    }
+ .form-row .emoji-option.selected {
+   border: 2px solid #4caf50;
+   /* Зелёная рамка */
+   box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+   /* Светящаяся тень */
+ }
 
-    #entryList th,
-    #entryList td {
-      border: none;
-      padding: 8px;
-      text-align: left;
-    }
+ .form-row button {
+   font-size: 24px;
+   padding: 6px 15px;
+   border-radius: 50%;
+   border: none;
+   background: #dcdcdc;
+   cursor: pointer;
+   flex-shrink: 0;
+ }
 
-    #entryList th {
-      background-color: #f4f4f4;
-      font-weight: bold;
-    }
+ .form-row button:hover {
+   background: #ccc;
+ }
 
-    #entryList .emoji-cell {
-      white-space: nowrap;
-      text-align: center;
-      width: 1%;
-    }
+ #entryList {
+   width: 100%;
+   border-collapse: collapse;
+   margin-top: 10px;
+   border: none;
+ }
 
-    #entryList .emoji-cell .circle {
-      width: 24px;
-      height: 24px;
-      font-size: 16px;
-      line-height: 24px;
-      margin-left: -12px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      background: #eee;
-      box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
-    }
+ #entryList th,
+ #entryList td {
+   border: none;
+   padding: 8px;
+   text-align: left;
+ }
 
-    #entryList .emoji-cell .circle:first-child {
-      margin-left: 0;
-    }
+ #entryList th {
+   background-color: #f4f4f4;
+   font-weight: bold;
+ }
 
-    .result-count {
-      margin-left: 16px;
-      font-size: 40px !important;
-      font-weight: bold;
-      color: black !important;
-    }
+ #entryList .emoji-cell {
+   white-space: nowrap;
+   text-align: center;
+   width: 1%;
+ }
 
-    .autocomplete-list {
-      position: absolute;
-      left: 0;
-      top: 100%; /* Под input'ом */
-      margin-top: 2px;
-      background: #fff;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      max-height: 160px;
-      overflow-y: auto;
-      z-index: 100;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-      min-width: 180px;
-    }
+ #entryList .emoji-cell .circle {
+   width: 24px;
+   height: 24px;
+   font-size: 16px;
+   line-height: 24px;
+   margin-left: -12px;
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   border-radius: 50%;
+   background: #eee;
+   box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+ }
 
-    .autocomplete-item {
-      padding: 6px 10px;
-      cursor: pointer;
-    }
+ #entryList .emoji-cell .circle:first-child {
+   margin-left: 0;
+ }
 
-    .autocomplete-item:hover,
-    .autocomplete-item.active {
-      background: #f0f0f0;
-    }
+ .result-count {
+   margin-left: 16px;
+   font-size: 40px !important;
+   font-weight: bold;
+   color: black !important;
+ }
 
-    /* ======= МЕДИА-СТИЛИ для телефонов ======= */
-    @media (max-width: 600px) {
-      body {
-        padding: 10px 2px;
-      }
+ .autocomplete-list {
+   position: absolute;
+   left: 0;
+   top: 100%;
+   /* Под input'ом */
+   margin-top: 2px;
+   background: #fff;
+   border: 1px solid #ccc;
+   border-radius: 6px;
+   max-height: 160px;
+   overflow-y: auto;
+   z-index: 100;
+   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+   min-width: 180px;
+ }
 
-      .container {
-        height: auto;
-        flex-wrap: wrap;
-        min-height: 60px;
-      }
+ .autocomplete-item {
+   padding: 6px 10px;
+   cursor: pointer;
+ }
 
-      .circle {
-        width: 48px;
-        height: 48px;
-        font-size: 24px;
-        line-height: 48px;
-        margin-left: -30px;
-      }
+ .autocomplete-item:hover,
+ .autocomplete-item.active {
+   background: #f0f0f0;
+ }
 
-      .form-row {
-        flex-wrap: wrap;
-        gap: 4px;
-        margin: 6px 0;
-      }
+ /* ======= МЕДИА-СТИЛИ для телефонов ======= */
+ @media (max-width: 600px) {
+   body {
+     padding: 10px 2px;
+   }
 
-      .form-row input[type="text"] {
-        font-size: 15px;
-        padding: 5px 8px;
-        width: 100%;
-        max-width: 100%;
-      }
+   .container {
+     height: auto;
+     flex-wrap: wrap;
+     min-height: 60px;
+   }
 
-      .form-row input[type="number"] {
-        font-size: 15px;
-        padding: 5px 8px;
-        width: 38px;
-      }
+   .circle {
+     width: 48px;
+     height: 48px;
+     font-size: 24px;
+     line-height: 48px;
+     margin-left: -30px;
+   }
 
-      .form-row button {
-        font-size: 18px;
-        padding: 5px 10px;
-      }
+   .form-row {
+     flex-wrap: wrap;
+     gap: 4px;
+     margin: 6px 0;
+   }
 
-      .emoji-option {
-        font-size: 18px;
-        padding: 4px;
-      }
+   .form-row input[type="text"] {
+     font-size: 15px;
+     padding: 5px 8px;
+     width: 100%;
+     max-width: 100%;
+   }
 
-      #entryList {
-        font-size: 13px;
-        margin-top: 6px;
-        display: block;
-        overflow-x: auto;
-        width: 100vw;
-        min-width: 320px;
-      }
+   .form-row input[type="number"] {
+     font-size: 15px;
+     padding: 5px 8px;
+     width: 38px;
+   }
 
-      #entryList th,
-      #entryList td {
-        font-size: 13px;
-        padding: 5px;
-        min-width: 60px;
-        word-break: break-word;
-      }
+   .form-row button {
+     font-size: 18px;
+     padding: 5px 10px;
+   }
 
-      #entryList .emoji-cell .circle {
-        width: 18px;
-        height: 18px;
-        font-size: 12px;
-        line-height: 18px;
-        margin-left: -7px;
-      }
+   .emoji-option {
+     font-size: 18px;
+     padding: 4px;
+   }
 
-      #entryList .emoji-cell .circle:first-child {
-        margin-left: 0;
-      }
+   #entryList {
+     font-size: 13px;
+     margin-top: 6px;
+     display: block;
+     overflow-x: auto;
+     width: 100vw;
+     min-width: 320px;
+   }
 
-      .result-count {
-        font-size: 48px;
-        margin-left: 8px;
-      }
+   #entryList th,
+   #entryList td {
+     font-size: 13px;
+     padding: 5px;
+     min-width: 60px;
+     word-break: break-word;
+   }
 
-      .autocomplete-list {
-        min-width: 120px;
-        font-size: 14px;
-        max-height: 100px;
-      }
-    }
+   #entryList .emoji-cell .circle {
+     width: 18px;
+     height: 18px;
+     font-size: 12px;
+     line-height: 18px;
+     margin-left: -7px;
+   }
+
+   #entryList .emoji-cell .circle:first-child {
+     margin-left: 0;
+   }
+
+   .result-count {
+     font-size: 48px;
+     margin-left: 8px;
+   }
+
+   .autocomplete-list {
+     min-width: 120px;
+     font-size: 14px;
+     max-height: 100px;
+   }
+ }
