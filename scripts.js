@@ -20,6 +20,15 @@ function createCircle(type, zIndex, half = false, opacity = 1) {
     return circle;
 }
 
+
+function myIncrease(intcrease){
+    const myEntryCount = document.getElementById('entryCount');
+    myEntryCount.value = (Number(myEntryCount.value) + intcrease).toFixed(1)
+
+}
+
+
+
 // Обновление отображения результата
 function updateResult() {
     const absCount = Math.abs(counter);

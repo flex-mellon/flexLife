@@ -60,11 +60,44 @@
 
 .score-container {
   display: flex;
+  align-items: center;
   justify-content: space-between;
   background: #ffffff40;
   margin: 16px;
   padding: 8px;
   border-radius: 16px;
+  backdrop-filter: blur(8px);
+
+}
+
+.my-container {
+  background: #ffffff40;
+  margin: 16px;
+  padding: 8px;
+  border-radius: 16px;
+  backdrop-filter: blur(8px);
+}
+
+.my-button {
+  width: 48px;
+  height: 48px;
+  display: inline-block;
+  line-height: 48px;
+  vertical-align: center;
+  text-align: center;
+  color: white;
+  border-radius: 16px;
+  background: #020024;
+  background: radial-gradient(circle, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 53%, rgba(0, 212, 255, 1) 100%);
+}
+
+#entryCount {
+  font-size: 16px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  width: auto;
+  text-align: center;
 }
 
 body {

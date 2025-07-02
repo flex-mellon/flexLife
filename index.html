@@ -9,6 +9,8 @@
 </head>
 
 <body>
+
+    <!--#region Score container-->
     <div class="score-container">
         <!-- Counter by fM-->
         <div id="myCounter"></div>
@@ -16,27 +18,33 @@
         <!-- Score by fm-->
         <div id="myScore"></div>
     </div>
+    <!--#endregion-->
 
-    <h2>Добавить запись</h2>
-    <div class="form-row">
-        <!-- Ввод имени записи -->
-        <input type="text" id="entryName" autocomplete="off" />
 
-        <!-- Подсказки при вводе -->
-        <div id="autocompleteList" class="autocomplete-list" style="display:none"></div>
 
-        <!-- Количество -->
+
+
+    <div class="my-container">
+        <h2>Добавить запись</h2>
+        <div class="form-row">
+            <input type="text" id="entryName" autocomplete="off" />
+            <div id="autocompleteList" class="autocomplete-list" style="display:none"></div>
+            <div class="emoji-option" data-type="star" onclick="selectEmoji('star')">⭐</div>
+            <div class="emoji-option" data-type="x" onclick="selectEmoji('x')">😡</div>
+            <button id="saveBtn">+</button>
+        </div>
+
         <input type="number" id="entryCount" value="1" min="0.1" step="0.1" />
+        <button onclick="myIncrease(-1.0)" class="my-button">-1.0</button>
+        <button onclick="myIncrease(-0.1)" class="my-button">-0.1</button>
+        <button onclick="myIncrease(0.1)" class="my-button">+0.1</button>
+        <button onclick="myIncrease(1)" class="my-button">+1.0</button>
 
-        <!-- Эмодзи звезда -->
-        <div class="emoji-option" data-type="star" onclick="selectEmoji('star')">⭐</div>
-
-        <!-- Эмодзи злость -->
-        <div class="emoji-option" data-type="x" onclick="selectEmoji('x')">😡</div>
-
-        <!-- Кнопка добавления -->
-        <button id="saveBtn">+</button>
     </div>
+
+
+
+
 
     <!-- Заголовок + кнопка очистки -->
     <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
