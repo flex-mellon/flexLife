@@ -1,34 +1,39 @@
 <!DOCTYPE html>
-<!-- Указывает, что документ написан на HTML5 -->
 <html lang="ru">
-<!-- Язык содержимого страницы — русский -->
 
 <head>
     <meta charset="UTF-8" />
-    <!-- Кодировка: поддержка кириллицы и эмодзи -->
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <!-- Адаптивность для телефонов -->
     <title>Счётчик со звёздам</title>
-    <!-- Заголовок вкладки браузера -->
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <!-- Блок отображения общего счёта   -->
-    <div class="container" id="resultDisplay"></div>
+    <div class="score-container">
+        <!-- Counter by fM-->
+        <div id="myCounter"></div>
+
+        <!-- Score by fm-->
+        <div id="myScore"></div>
+    </div>
 
     <h2>Добавить запись</h2>
     <div class="form-row">
         <!-- Ввод имени записи -->
         <input type="text" id="entryName" autocomplete="off" />
+
         <!-- Подсказки при вводе -->
         <div id="autocompleteList" class="autocomplete-list" style="display:none"></div>
+
         <!-- Количество -->
         <input type="number" id="entryCount" value="1" min="0.1" step="0.1" />
+
         <!-- Эмодзи звезда -->
         <div class="emoji-option" data-type="star" onclick="selectEmoji('star')">⭐</div>
+
         <!-- Эмодзи злость -->
         <div class="emoji-option" data-type="x" onclick="selectEmoji('x')">😡</div>
+
         <!-- Кнопка добавления -->
         <button id="saveBtn">+</button>
     </div>
@@ -37,9 +42,11 @@
     <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
         <button id="exportHistoryBtn" title="Экспорт истории"
             style="font-size:20px; background:none; border:none; cursor:pointer;">📤</button>
+
         <button id="resetCounterBtn" title="Сбросить счётчик"
             style="font-size:20px; background:none; border:none; cursor:pointer;">🔄</button>
         <h2>История</h2>
+
         <button id="clearHistoryBtn">🗑️</button>
     </div>
 
@@ -47,6 +54,7 @@
     <table id="entryList"></table>
 
     <script src="scripts.js"></script>
+
     <!-- Модальное окно для информации об эмодзи -->
     <div id="emojiInfoModal"
         style="display:none; position:fixed; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.3); align-items:center; justify-content:center; z-index:999;">

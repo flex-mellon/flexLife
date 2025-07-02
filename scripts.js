@@ -22,42 +22,39 @@ function createCircle(type, zIndex, half = false, opacity = 1) {
 
 // Обновление отображения результата
 function updateResult() {
-    const container = document.getElementById('resultDisplay');
-    container.innerHTML = '';
-
     const absCount = Math.abs(counter);
-    const type = counter >= 0 ? 'star' : 'x';
+    const countInt = Math.floor(absCount);
+    const countDecimal = absCount.toFixed(1);
+    const percents = countDecimal - countInt; // .1
 
-    // Показываем только одну цифру после запятой
-    const displayCount = absCount.toFixed(1);
+    const myCounter = document.getElementById('myCounter')
+    myCounter.innerHTML = '';
+    let myIcons = '';
 
-    // Целая и дробная часть
-    const intPart = Math.floor(absCount);
-    const fracPart = absCount - intPart;
-
-    let icons = '';
-    for (let i = 0; i < intPart; i++) {
-        icons += `<div class="circle" style="display:inline-block;"><span style="opacity:1">${type === 'star' ? '⭐' : '😡'}</span></div>`;
+    if (countDecimal < 0.1) { // score is zero
+        myIcons += `<div class="zero"><div></div><img src="img/counter/zero.png"></div>`;
+    } else {
+        for (let i = 0; i < countInt; i++) {
+            if (counter > 0) { // positive
+                myIcons += `<div class="positive"><div></div><img src="img/counter/positive.png"></div>`;
+            } else { // negative
+                myIcons += `<div class="negative"><div></div><img src="img/counter/negative.png"></div>`;
+            }
+        }
     }
-    if (fracPart >= 0.05) {
-        icons += `<div class="circle" style="display:inline-block;"><span style="opacity:${fracPart}">${type === 'star' ? '⭐' : '😡'}</span></div>`;
-    }
 
-    container.innerHTML = icons;
-
-    const countDiv = document.createElement('div');
-    countDiv.className = 'result-count';
-    countDiv.textContent = displayCount;
-    if (absCount > 0) {
-        countDiv.textContent = "x" + countDiv.textContent;
+    const percent = 100 - Math.floor(percents * 100);
+    if (percents > 0) {
+        if (counter > 0) { // positive
+            myIcons += `<div class="positive"><div></div><img style="clip-path: inset(0 ${percent}% 0 0);" src="img/counter/positive.png"></div>`;
+        } else { // negative
+            myIcons += `<div class="negative"><div></div><img style="clip-path: inset(0 ${percent}% 0 0);" src="img/counter/negative.png"></div>`;
+        }
     }
-    // Добавляем обработчик для модального окна
-    countDiv.style.cursor = 'pointer';
-    countDiv.onclick = function () {
-        // Для счётчика: количество целых + дробная часть (одна цифра после точки)
-        showEmojiInfo(intPart + (fracPart >= 0.05 ? 1 : 0), fracPart >= 0.05 ? Math.round(fracPart * 10) : 10, type);
-    };
-    container.appendChild(countDiv);
+    myCounter.innerHTML = myIcons;
+
+    const myScore = document.getElementById('myScore');
+    myScore.innerHTML = countDecimal;
 }
 
 // Рисуем таблицу истории
