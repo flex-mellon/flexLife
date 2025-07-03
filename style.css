@@ -78,11 +78,16 @@
   backdrop-filter: blur(8px);
 }
 
+.increase-grid{
+  display: grid;
+  grid-template-columns: 2fr repeat(4, 1fr);
+  gap: 8px;
+}
 .my-button {
-  width: 48px;
-  height: 48px;
+  width: auto;
+  height: 40px;
   display: inline-block;
-  line-height: 48px;
+  line-height: 40px;
   vertical-align: center;
   text-align: center;
   color: white;
@@ -218,9 +223,11 @@ body {
   padding: 8px;
   text-align: left;
 }
+#entryList .gogo{
+  width: 99%;
+}
 
 #entryList th {
-  background-color: #f4f4f4;
   font-weight: bold;
 }
 

@@ -66,6 +66,7 @@ function updateResult() {
     myScore.innerHTML = countDecimal;
 }
 
+
 // Рисуем таблицу истории
 function renderList() {
     const list = document.getElementById('entryList');
@@ -82,6 +83,7 @@ function renderList() {
         ${entries.slice().reverse().map((e, idx) => {
         const intPart = Math.floor(Math.abs(e.count));
         const fracPart = Math.abs(e.count) - intPart;
+        const displayValue = (intPart + fracPart).toFixed(1);
         let icons = '';
         for (let i = 0; i < intPart; i++) {
             icons += `<div class="circle"><span style="opacity:1">${e.type === 'star' ? '⭐' : '😡'}</span></div>`;
@@ -95,11 +97,12 @@ function renderList() {
               <tr>
                 <td>${e.date}</td>
                 <td class="text-cell">
-                  <span class="history-name" 
+                  <span
+                  onclick="alert('${displayValue}')" 
+                  class="history-name" 
                         data-count="${intPart + (fracPart >= 0.05 ? 1 : 0)}" 
-                        data-opacity="${fracPart >= 0.05 ? Math.round(fracPart * 10) : 10}" 
-                        data-type="${e.type}" 
-                        style="cursor:pointer; text-decoration:underline; color:#1976d2;">
+                        data-opacity="${fracPart}" 
+                        data-type="${e.type}" >
                     ${e.name}
                   </span>
                 </td>
