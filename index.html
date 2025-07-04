@@ -35,16 +35,47 @@
         </div>
 
         <div class="increase-grid">
-            
             <input type="number" id="entryCount" value="1" min="0.1" step="0.1" />
-            <button onclick="myIncrease(-1.0)" class="my-button">-1.0</button>
+            <button onclick="showCalc()" class="my-button">#</button>
+            <button onclick="myIncrease(-1.0)" class="my-button">-1</button>
             <button onclick="myIncrease(-0.1)" class="my-button">-0.1</button>
             <button onclick="myIncrease(0.1)" class="my-button">+0.1</button>
-            <button onclick="myIncrease(1)" class="my-button">+1.0</button>
+            <button onclick="myIncrease(1)" class="my-button">+1</button>
         </div>
 
     </div>
 
+
+
+    <div class="myCalc">
+        <div class="myCalcGrid">
+            <input id="inputMain" style="grid-column: span 3;" type="text" name="" readonly>
+            <input id="inputPreview" type="text" name="" readonly>
+            <!-- 1 2 3 <- -->
+            <button onclick="myCalc('1')" class="">1</button>
+            <button onclick="myCalc('2')" class="">2</button>
+            <button onclick="myCalc('3')" class="">3</button>
+            <button onclick="myCalc('<-')" class=""><-</button>
+            <!-- 4 5 6 X -->
+            <button onclick="myCalc('4')" class="">4</button>
+            <button onclick="myCalc('5')" class="">5</button>
+            <button onclick="myCalc('6')" class="">6</button>
+            <button onclick="myCalc('*')" class="">*</button>
+            <!-- 7 8 9 / -->
+            <button onclick="myCalc('7')" class="">7</button>
+            <button onclick="myCalc('8')" class="">8</button>
+            <button onclick="myCalc('9')" class="">9</button>
+            <button onclick="myCalc('/')" class="">/</button>
+            <!-- X . 0 done -->
+            <button onclick="myCalc('X')" class="">X</button>
+            <button onclick="myCalc('.')" class="">.</button>
+            <button onclick="myCalc('0')" class="">0</button>
+            <button onclick="myCalc('done')" class="">done</button>
+        </div>
+
+
+
+    </div>
 
 
 

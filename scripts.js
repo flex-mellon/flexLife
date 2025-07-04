@@ -5,6 +5,7 @@ if (isNaN(counter)) counter = 0;
 let selectedEmojiType = 'star';
 let nameSuggestions = JSON.parse(localStorage.getItem('nameSuggestions') || '[]');
 
+
 // Создание круга с эмодзи
 function createCircle(type, zIndex, half = false, opacity = 1) {
     const circle = document.createElement('div');
@@ -21,7 +22,7 @@ function createCircle(type, zIndex, half = false, opacity = 1) {
 }
 
 
-function myIncrease(intcrease){
+function myIncrease(intcrease) {
     const myEntryCount = document.getElementById('entryCount');
     myEntryCount.value = (Number(myEntryCount.value) + intcrease).toFixed(1)
 
@@ -283,6 +284,51 @@ document.getElementById('exportHistoryBtn').onclick = function () {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
 };
+
+
+// #region myCalc
+
+function myCalc(myEvent) {
+    const inputMain = document.getElementById('inputMain');
+    const inputPreview = document.getElementById('inputPreview');
+    const inputCounter = document.getElementById('entryCount');
+
+    if (myEvent == 'done') {
+        inputCounter.value = inputPreview.value
+    } else if (myEvent == 'X') {
+
+    } else if (myEvent == '') {
+        inputMain.value += myEvent
+        inputPreview.value = eval(inputMain.value)
+    } else if (myEvent == '<-') {
+        inputMain.value = inputMain.value.slice(0, -1)
+        inputPreview.value = eval(inputMain.value)
+    } else {
+        inputMain.value += myEvent
+        inputPreview.value = eval(inputMain.value)
+    }
+
+
+}
+
+
+
+
+// #endregion
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Инициализация
 selectEmoji('star');

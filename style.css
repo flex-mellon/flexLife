@@ -1,3 +1,27 @@
+
+.myCalc {
+  margin-right: 16px;
+  margin-bottom: 32px;
+
+  padding: 8px;
+  position: fixed;       /* sit on top of all page content */
+  bottom: 0;             /* anchor to the bottom of the viewport */
+  left: 50%;
+  right: 0;
+  /* height is auto by default, so it grows upward as content grows */
+
+  /* optional styling */
+  background: white;
+  box-shadow: 0 10px 10px rgba(0,0,0,0.4);
+  z-index: 9999;
+
+  /* prevent it from growing taller than the screen */
+
+  overflow-y: auto;      /* scroll internally if content overflows */
+  display: inline-block;
+}
+
+
 /* #region positive and negative icons with percent */
 .positive,
 .negative,
@@ -80,12 +104,20 @@
 
 .increase-grid{
   display: grid;
-  grid-template-columns: 2fr repeat(4, 1fr);
+  grid-template-columns: 1fr repeat(5, 1fr);
   gap: 8px;
 }
-.increase-grid input {
+.increase-grid input,
+.myCalcGrid input {
   min-width: 0;
 }
+.myCalcGrid{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+
 .my-button {
   width: auto;
   height: 40px;
