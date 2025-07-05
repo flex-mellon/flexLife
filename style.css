@@ -1,25 +1,34 @@
-
-.myCalc {
-  margin-right: 16px;
-  margin-bottom: 32px;
-
+#myCalc {
+  margin: 0 32px 32px 0;
   padding: 8px;
-  position: fixed;       /* sit on top of all page content */
-  bottom: 0;             /* anchor to the bottom of the viewport */
-  left: 50%;
+  position: fixed;
+  bottom: 0;
+  left: 25%;
   right: 0;
-  /* height is auto by default, so it grows upward as content grows */
-
-  /* optional styling */
   background: white;
-  box-shadow: 0 10px 10px rgba(0,0,0,0.4);
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.4);
   z-index: 9999;
-
-  /* prevent it from growing taller than the screen */
-
-  overflow-y: auto;      /* scroll internally if content overflows */
-  display: inline-block;
+  overflow-y: auto;
+  display: none;
 }
+
+
+#button-add {
+  width: 56px;
+  height: 56px;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  margin: 32px;
+  background: url(img/calculator.png);
+  background-size: contain;
+  border-radius: 999px;
+  z-index: 99;
+  display: block;
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 11);
+}
+
+
 
 
 /* #region positive and negative icons with percent */
@@ -102,19 +111,24 @@
   backdrop-filter: blur(8px);
 }
 
-.increase-grid{
+.increase-grid {
   display: grid;
   grid-template-columns: 1fr repeat(5, 1fr);
   gap: 8px;
 }
+
 .increase-grid input,
 .myCalcGrid input {
   min-width: 0;
 }
-.myCalcGrid{
+
+.myCalcGrid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 8px;
+}
+.myCalcGrid button {
+  min-height: 40px;
 }
 
 
@@ -258,7 +272,8 @@ body {
   padding: 8px;
   text-align: left;
 }
-#entryList .gogo{
+
+#entryList .gogo {
   width: 99%;
 }
 

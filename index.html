@@ -47,30 +47,30 @@
 
 
 
-    <div class="myCalc">
+    <div id="myCalc">
         <div class="myCalcGrid">
             <input id="inputMain" style="grid-column: span 3;" type="text" name="" readonly>
             <input id="inputPreview" type="text" name="" readonly>
             <!-- 1 2 3 <- -->
-            <button onclick="myCalc('1')" class="">1</button>
-            <button onclick="myCalc('2')" class="">2</button>
-            <button onclick="myCalc('3')" class="">3</button>
-            <button onclick="myCalc('<-')" class=""><-</button>
+            <button onclick="my_calc('1')" class="">1</button>
+            <button onclick="my_calc('2')" class="">2</button>
+            <button onclick="my_calc('3')" class="">3</button>
+            <button onclick="my_calc('<-')" class=""><-</button>
             <!-- 4 5 6 X -->
-            <button onclick="myCalc('4')" class="">4</button>
-            <button onclick="myCalc('5')" class="">5</button>
-            <button onclick="myCalc('6')" class="">6</button>
-            <button onclick="myCalc('*')" class="">*</button>
+            <button onclick="my_calc('4')" class="">4</button>
+            <button onclick="my_calc('5')" class="">5</button>
+            <button onclick="my_calc('6')" class="">6</button>
+            <button onclick="my_calc('*')" class="">*</button>
             <!-- 7 8 9 / -->
-            <button onclick="myCalc('7')" class="">7</button>
-            <button onclick="myCalc('8')" class="">8</button>
-            <button onclick="myCalc('9')" class="">9</button>
-            <button onclick="myCalc('/')" class="">/</button>
+            <button onclick="my_calc('7')" class="">7</button>
+            <button onclick="my_calc('8')" class="">8</button>
+            <button onclick="my_calc('9')" class="">9</button>
+            <button onclick="my_calc('/')" class="">/</button>
             <!-- X . 0 done -->
-            <button onclick="myCalc('X')" class="">X</button>
-            <button onclick="myCalc('.')" class="">.</button>
-            <button onclick="myCalc('0')" class="">0</button>
-            <button onclick="myCalc('done')" class="">done</button>
+            <button onclick="calc_button_x()" class="">X</button>
+            <button onclick="my_calc('.')" class="">.</button>
+            <button onclick="my_calc('0')" class="">0</button>
+            <button onclick="my_calc('done')" class="">done</button>
         </div>
 
 
@@ -110,6 +110,11 @@
             <div id="emojiInfoContent"></div>
         </div>
     </div>
+
+
+    <div onclick='button_add()' id='button-add'></div>
+
+
 </body>
 
 </html>

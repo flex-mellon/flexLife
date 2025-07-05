@@ -288,15 +288,40 @@ document.getElementById('exportHistoryBtn').onclick = function () {
 
 // #region myCalc
 
-function myCalc(myEvent) {
+
+function button_add() {
+    const buttonAdd = document.getElementById('button-add');
+    const myCalc = document.getElementById('myCalc');
+    const inputMain = document.getElementById('inputMain');
+    inputMain.value = ''
+    buttonAdd.style.display = 'none';
+    myCalc.style.display = 'block'
+}
+function calc_button_x() {
+    const buttonAdd = document.getElementById('button-add');
+    const myCalc = document.getElementById('myCalc');
+    myCalc.style.display = 'none'
+    buttonAdd.style.display = 'block';
+}
+
+function my_calc(myEvent) {
+    const myCalc = document.getElementById('myCalc');
     const inputMain = document.getElementById('inputMain');
     const inputPreview = document.getElementById('inputPreview');
     const inputCounter = document.getElementById('entryCount');
 
     if (myEvent == 'done') {
-        inputCounter.value = inputPreview.value
-    } else if (myEvent == 'X') {
+        const iCv = Number(inputPreview.value)
+        if (iCv < 0.1) {
+            alert('Please do not fuck with me')
+        } else {
+            inputCounter.value = iCv.toFixed(1)
+            calc_button_x()
+        }
 
+
+    } else if (myEvent == 'X') {
+        myCalc.style.display = 'none'
     } else if (myEvent == '') {
         inputMain.value += myEvent
         inputPreview.value = eval(inputMain.value)
