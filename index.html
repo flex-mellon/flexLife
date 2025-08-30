@@ -1,119 +1,120 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Счётчик со звёздам</title>
-    <link rel="stylesheet" href="style.css">
+    <title>FlexLife</title>
+    <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
 
-    <!--#region Score container-->
-    <div class="score-container">
-        <!-- Counter by fM-->
-        <div id="myCounter"></div>
 
-        <!-- Score by fm-->
-        <div id="myScore"></div>
-    </div>
-    <!--#endregion-->
-
-
-
-
-
-    <div class="my-container">
-        <h2>Добавить запись</h2>
-        <div class="form-row">
-            <input type="text" id="entryName" autocomplete="off" />
-            <div id="autocompleteList" class="autocomplete-list" style="display:none"></div>
-            <div class="emoji-option" data-type="star" onclick="selectEmoji('star')">⭐</div>
-            <div class="emoji-option" data-type="x" onclick="selectEmoji('x')">😡</div>
-            <button id="saveBtn">+</button>
+    <div style="display:flex;width:100%;height:250px;border:1px solid #ccc;">
+        <!-- Счётчик -->
+        <div id="counter"
+            style="flex:1;display:flex;justify-content:center;align-items:center;font-size:64px;font-weight:bold;color:red;">
+            0
         </div>
-
-        <div class="increase-grid">
-            <input type="number" id="entryCount" value="1" min="0.1" step="0.1" />
-            <button onclick="showCalc()" class="my-button">#</button>
-            <button onclick="myIncrease(-1.0)" class="my-button">-1</button>
-            <button onclick="myIncrease(-0.1)" class="my-button">-0.1</button>
-            <button onclick="myIncrease(0.1)" class="my-button">+0.1</button>
-            <button onclick="myIncrease(1)" class="my-button">+1</button>
-        </div>
-
-    </div>
-
-
-
-    <div id="myCalc">
-        <div class="myCalcGrid">
-            <input id="inputMain" style="grid-column: span 3;" type="text" name="" readonly>
-            <input id="inputPreview" type="text" name="" readonly>
-            <!-- 1 2 3 <- -->
-            <button onclick="my_calc('1')" class="">1</button>
-            <button onclick="my_calc('2')" class="">2</button>
-            <button onclick="my_calc('3')" class="">3</button>
-            <button onclick="my_calc('<-')" class=""><-</button>
-            <!-- 4 5 6 X -->
-            <button onclick="my_calc('4')" class="">4</button>
-            <button onclick="my_calc('5')" class="">5</button>
-            <button onclick="my_calc('6')" class="">6</button>
-            <button onclick="my_calc('*')" class="">*</button>
-            <!-- 7 8 9 / -->
-            <button onclick="my_calc('7')" class="">7</button>
-            <button onclick="my_calc('8')" class="">8</button>
-            <button onclick="my_calc('9')" class="">9</button>
-            <button onclick="my_calc('/')" class="">/</button>
-            <!-- X . 0 done -->
-            <button onclick="calc_button_x()" class="">X</button>
-            <button onclick="my_calc('.')" class="">.</button>
-            <button onclick="my_calc('0')" class="">0</button>
-            <button onclick="my_calc('done')" class="">done</button>
-        </div>
-
-
-
-    </div>
-
-
-
-
-    <div class="my-container">
-        <!-- Заголовок + кнопка очистки -->
-        <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-            <button id="exportHistoryBtn" title="Экспорт истории"
-                style="font-size:20px; background:none; border:none; cursor:pointer;">📤</button>
-
-            <button id="resetCounterBtn" title="Сбросить счётчик"
-                style="font-size:20px; background:none; border:none; cursor:pointer;">🔄</button>
-            <h2>История</h2>
-
-            <button id="clearHistoryBtn">🗑️</button>
-        </div>
-
-        <!-- Таблица с историями -->
-        <table id="entryList"></table>
-
-    </div>
-
-    <script src="scripts.js"></script>
-
-    <!-- Модальное окно для информации об эмодзи -->
-    <div id="emojiInfoModal"
-        style="display:none; position:fixed; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.3); align-items:center; justify-content:center; z-index:999;">
-        <div
-            style="background:#fff; padding:24px 18px; border-radius:12px; min-width:220px; text-align:center; position:relative;">
-            <button id="closeEmojiInfoModal"
-                style="position:absolute; right:8px; top:8px; background:none; border:none; font-size:18px; cursor:pointer;">✖</button>
-            <div id="emojiInfoContent"></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;padding:10px;">
+            <img width="64px" id="image" src="/reward/1.png" alt=""
+                style="max-width:100%;height:auto;margin-bottom:8px;">
+            <div style="width:100%;background:#eee;height:20px;border-radius:10px;overflow:hidden;">
+                <div id="progress" style="width:0%;height:100%;background:green;transition:width 0.5s;"></div>
+            </div>
         </div>
     </div>
+    <button onclick="animateCounter(-100)">+</button>
+    <button onclick="animateImage('reward/2.png')">-</button>
+
+    <div style="margin-bottom: 8px;"></div>
 
 
-    <div onclick='button_add()' id='button-add'></div>
 
+
+    <script>
+        // #region Widget counter + image + progress
+        const counterEl = document.getElementById("counter");
+        const imageEl = document.getElementById("image");
+        const progressEl = document.getElementById("progress");
+
+        let counterValue = 0;
+        let progressMax = 100;
+        let progressValue = 0;
+
+        function setCounter(value) {
+            counterValue = value;
+            counterEl.textContent = value;
+        }
+
+        function getCounter() {
+            return counterValue;
+        }
+
+        function setImage(url) {
+            imageEl.src = url;
+        }
+
+        function setProgressMax(max) {
+            progressMax = max;
+        }
+
+        function setProgressValue(value) {
+            progressValue = Math.min(value, progressMax);
+            let percent = (progressValue / progressMax) * 100;
+            progressEl.style.width = percent + "%";
+        }
+
+        // анимированное изменение значения счётчика
+        function animateCounter(toValue, duration = 1000) {
+            let fromValue = counterValue;
+            let start = null;
+
+            function step(timestamp) {
+                if (!start) start = timestamp;
+                let progress = Math.min((timestamp - start) / duration, 1);
+                let current = Math.floor(fromValue + (toValue - fromValue) * progress);
+                setCounter(current);
+                if (progress < 1) requestAnimationFrame(step);
+            }
+            requestAnimationFrame(step);
+        }
+
+        function animateProgress(toValue, duration = 1000) {
+            let fromValue = progressValue;
+            let start = null;
+
+            function step(timestamp) {
+                if (!start) start = timestamp;
+                let progress = Math.min((timestamp - start) / duration, 1);
+                let current = fromValue + (toValue - fromValue) * progress;
+                setProgressValue(current);
+                if (progress < 1) requestAnimationFrame(step);
+            }
+            requestAnimationFrame(step);
+        }
+
+        function animateImage(url, duration = 1000) {
+            imageEl.style.transition = `opacity ${duration / 2}ms`;
+            imageEl.style.opacity = 0;
+
+            setTimeout(() => {
+                imageEl.src = url;
+                imageEl.onload = () => {
+                    imageEl.style.opacity = 1;
+                };
+            }, duration / 2);
+        }
+        // Пример использования
+
+
+
+
+        // #endregion
+
+
+    </script>
 
 </body>
 
