@@ -1,0 +1,79 @@
+/*region Global Styles*/
+
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    padding: 8px
+}
+
+
+/*endregion*/
+* {
+    /*border: 1px solid rebeccapurple;*/
+}
+
+/*region widget-counter*/
+.widget-counter-container {
+    border: 1px solid black;
+    padding: 4px;
+    margin-top: 8px;
+}
+
+.widget-counter-row {
+    display: flex;
+}
+
+.widget-counter-column {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.widget-counter-column.score {
+    font-size: 36px;
+}
+
+.widget-counter-column img {
+    width: 48px;
+
+}
+
+.widget-counter-progress {
+    width: 100%;
+}
+
+/*endregion*/
+
+/*region widget-make*/
+
+.widget-make-calc-container {
+    padding: 0 4px 4px 4px;
+    margin-top: 8px;
+    display: block;
+    border: 1px solid black;
+}
+
+.widget-make-calc-r {
+    gap: 4px;
+    display: flex;
+}
+
+.widget-make-calc-btn {
+    min-height: 36px;
+    margin-top: 4px;
+    border: 1px solid black;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/*endregion*/
+
+
