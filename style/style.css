@@ -51,21 +51,23 @@ body {
 
 /*region widget-make*/
 
-.widget-make-calc-container {
+.keyboard-box {
+    display: none;
     padding: 0 4px 4px 4px;
     margin-top: 8px;
     border: 1px solid black;
     position: fixed;
-    bottom: 96px;
+    bottom: 0;
     right: 0;
+    z-index: 1000;
 }
 
-.widget-make-calc-r {
+.keyboard-box .row {
     gap: 4px;
     display: flex;
 }
 
-.widget-make-calc-btn, .widget-make-calc-preview {
+.keyboard-box .row .button, .keyboard-box .row .display {
     background: lightgray;
     min-height: 48px;
     min-width: 48px;
@@ -75,7 +77,7 @@ body {
     align-items: center;
     justify-content: center;
 }
-.widget-make-calc-preview{
+.keyboard-box .row .display{
     flex: 2;
     background: lightskyblue;
 }
@@ -83,4 +85,13 @@ body {
 
 /*endregion*/
 
-
+.chips {
+    display: inline-block;
+    border: 1px solid black;
+    padding: 4px;
+    line-height: 30px;
+    vertical-align: middle;
+    margin: 4px 4px;
+    min-width: 40px;
+    height: 30px;
+}

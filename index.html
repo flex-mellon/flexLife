@@ -26,36 +26,43 @@
 <!--endregion-->
 
 <!--region Make-->
-<div class="widget-make-calc-container">
-    <div class="widget-make-calc-r">
-        <div class="widget-make-calc-preview">12345</div>
-        <div class="widget-make-calc-btn"><-</div>
+<div id="keyboard" class="keyboard-box">
+    <div class="row">
+        <div id="userInput" class="display">12345</div>
+        <button onclick="userInputClear()" class="button"><-</button>
     </div>
-    <div class="widget-make-calc-r">
-        <div class="widget-make-calc-btn">1</div>
-        <div class="widget-make-calc-btn">2</div>
-        <div class="widget-make-calc-btn">3</div>
+    <div class="row">
+        <button onclick="userInputAdds('1')" class="button">1</button>
+        <button onclick="userInputAdds('2')" class="button">2</button>
+        <button onclick="userInputAdds('3')" class="button">3</button>
     </div>
-    <div class="widget-make-calc-r">
-        <div class="widget-make-calc-btn">4</div>
-        <div class="widget-make-calc-btn">5</div>
-        <div class="widget-make-calc-btn">6</div>
+    <div class="row">
+        <button onclick="userInputAdds('4')" class="button">4</button>
+        <button onclick="userInputAdds('5')" class="button">5</button>
+        <button onclick="userInputAdds('6')" class="button">6</button>
     </div>
-    <div class="widget-make-calc-r">
-        <div class="widget-make-calc-btn">7</div>
-        <div class="widget-make-calc-btn">8</div>
-        <div class="widget-make-calc-btn">9</div>
+    <div class="row">
+        <button onclick="userInputAdds('7')" class="button">7</button>
+        <button onclick="userInputAdds('8')" class="button">8</button>
+        <button onclick="userInputAdds('9')" class="button">9</button>
     </div>
-    <div class="widget-make-calc-r">
-        <div class="widget-make-calc-btn">-</div>
-        <div class="widget-make-calc-btn">0</div>
-        <div class="widget-make-calc-btn">ok</div>
+    <div class="row">
+        <button onclick="userInputNegative()" class="button">-</button>
+        <button onclick="userInputAdds('0')" class="button">0</button>
+        <button onclick="userInputSave()" class="button">ok</button>
     </div>
-
-
 </div>
 
 <!--endregion-->
+
+<button onclick="categoryClick(this)" class="chips" data-id="0">Новая</button>
+<div id="categories">
+
+</div>
+
+
+
+<button onclick="keyboardToggle()">calc</button>
 
 
 <!--region END HTML-->
