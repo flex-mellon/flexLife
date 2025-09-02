@@ -5,11 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Продуктивность</title>
     <style>
+        :root {
+            --bg: #f5f7fa;
+            --card: #fff;
+            --accent: #4caf50;
+            --danger: #e53935;
+            --text: #333;
+            --shadow: 0 4px 12px rgba(0,0,0,0.1);
+            --radius: 16px;
+        }
         body {
-            font-family: sans-serif;
+            font-family: "Segoe UI", sans-serif;
             margin: 0;
             padding: 0;
-            background: #f7f7f7;
+            background: var(--bg);
+            color: var(--text);
             display: flex;
             flex-direction: column;
             height: 100vh;
@@ -19,7 +29,7 @@
             flex: 1;
             overflow-y: auto;
             padding: 4vw;
-            padding-bottom: 22vh; /* место под клавиатуру и навигацию */
+            padding-bottom: 24vh;
         }
 
         /* Счётчик и уровень */
@@ -31,15 +41,17 @@
             margin: 4vh 0;
         }
         .counter {
-            font-size: 10vw;
-            font-weight: bold;
+            font-size: 12vw;
+            font-weight: 800;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            transition: color 0.3s;
         }
         .level-ring {
             position: relative;
-            width: 20vw;
-            height: 20vw;
-            min-width: 70px;
-            min-height: 70px;
+            width: 22vw;
+            height: 22vw;
+            min-width: 80px;
+            min-height: 80px;
         }
         .level-ring svg {
             transform: rotate(-90deg);
@@ -48,15 +60,16 @@
         }
         .level-ring circle {
             fill: none;
-            stroke-width: 8;
+            stroke-width: 10;
             r: 36;
             cx: 40;
             cy: 40;
         }
         .level-ring .bg { stroke: #eee; }
         .level-ring .progress {
-            stroke: #4caf50;
+            stroke: var(--accent);
             stroke-linecap: round;
+            transition: stroke-dashoffset 0.3s ease;
         }
         .level-text {
             position: absolute;
@@ -64,7 +77,7 @@
             left: 50%;
             transform: translate(-50%,-50%);
             font-size: 5vw;
-            font-weight: bold;
+            font-weight: 700;
         }
 
         /* Категории */
@@ -77,25 +90,33 @@
         }
         .chip {
             padding: 1.5vh 3vw;
-            border-radius: 20px;
-            background: #ddd;
+            border-radius: var(--radius);
+            background: var(--card);
             cursor: pointer;
             font-size: 4vw;
-            min-width: 18vw;
+            min-width: 22vw;
             text-align: center;
             user-select: none;
+            box-shadow: var(--shadow);
+            transition: transform 0.1s;
         }
-        .chip.add { background: #4caf50; color: white; font-weight: bold; }
-        .chip:active { background: #bbb; }
+        .chip:hover { transform: scale(1.05); }
+        .chip.add {
+            background: linear-gradient(135deg, #43e97b, #38f9d7);
+            color: white;
+            font-weight: bold;
+        }
 
         /* Клавиатура */
         .keyboard-container {
             position: fixed;
-            bottom: 8vh; /* над навигацией */
+            bottom: 8vh;
             left: 0; right: 0;
-            background: #f7f7f7;
-            padding: 1vh 3vw;
-            border-top: 1px solid #ccc;
+            background: var(--card);
+            padding: 2vh 4vw;
+            border-top-left-radius: var(--radius);
+            border-top-right-radius: var(--radius);
+            box-shadow: var(--shadow);
             display: none;
             z-index: 100;
         }
@@ -103,43 +124,47 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1vh;
+            margin-bottom: 1.5vh;
         }
         .input-display {
             flex: 1;
-            background: #fff;
+            background: #f9f9f9;
             border: 1px solid #ccc;
             padding: 1.5vh;
-            font-size: 5vw;
-            border-radius: 12px;
+            font-size: 6vw;
+            border-radius: var(--radius);
             margin-right: 2vw;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.05);
         }
         .confirm-btn {
-            background: #4caf50;
+            background: var(--accent);
             color: white;
             padding: 1.5vh 3vw;
-            border-radius: 12px;
-            font-size: 5vw;
+            border-radius: var(--radius);
+            font-size: 6vw;
             cursor: pointer;
+            box-shadow: var(--shadow);
         }
         .keyboard {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 1vw;
+            gap: 2vw;
         }
         .key {
-            background: #fff;
-            border: 1px solid #ccc;
+            background: var(--card);
+            border: 1px solid #ddd;
             padding: 2.5vh 0;
-            font-size: 5vw;
+            font-size: 6vw;
             text-align: center;
             cursor: pointer;
-            border-radius: 10px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
             user-select: none;
+            transition: transform 0.1s;
         }
-        .key:active { background: #eee; }
+        .key:active { transform: scale(0.95); background: #eee; }
 
-        /* История */
+        /* История / Категории / Недельная */
         .history-header {
             display: flex;
             justify-content: space-between;
@@ -152,20 +177,29 @@
             margin: 0;
         }
         .history li, .weekly-list li, .category-list li {
-            background: #fff;
+            background: var(--card);
             margin: 1vh 0;
             padding: 2vh 3vw;
-            border-radius: 10px;
+            border-radius: var(--radius);
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-size: 4.5vw;
+            box-shadow: var(--shadow);
         }
         .record-actions button,
         .cat-actions button {
             font-size: 5vw;
             padding: 0.5vh 1.5vw;
             margin-left: 2vw;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background: #eee;
+        }
+        .record-actions button:hover,
+        .cat-actions button:hover {
+            background: #ddd;
         }
 
         /* Навигация */
@@ -175,7 +209,8 @@
             display: flex;
             border-top: 1px solid #ccc;
             height: 8vh;
-            background: #eee;
+            background: var(--card);
+            box-shadow: 0 -2px 6px rgba(0,0,0,0.1);
             z-index: 101;
         }
         nav button {
@@ -184,8 +219,9 @@
             border: none;
             background: transparent;
             cursor: pointer;
+            transition: background 0.2s;
         }
-        nav button.active { background: #ccc; }
+        nav button.active { background: rgba(76,175,80,0.15); }
     </style>
 </head>
 <body>
@@ -252,8 +288,320 @@
 </nav>
 
 <script>
-    /* Здесь весь JS из предыдущей версии (DB, checkDayChange, loadHistory, loadWeekly и т.д.)
-       менять не нужно, только CSS обновлён */
+    let db;
+    const request = indexedDB.open("productivityDB", 12);
+    request.onupgradeneeded = (e) => {
+        db = e.target.result;
+        if (!db.objectStoreNames.contains("records"))
+            db.createObjectStore("records", { keyPath: "id", autoIncrement: true });
+        if (!db.objectStoreNames.contains("categories"))
+            db.createObjectStore("categories", { keyPath: "id", autoIncrement: true });
+        if (!db.objectStoreNames.contains("weekly"))
+            db.createObjectStore("weekly", { keyPath: "date" });
+        if (!db.objectStoreNames.contains("meta"))
+            db.createObjectStore("meta", { keyPath: "key" });
+    };
+    request.onsuccess = (e) => {
+        db = e.target.result;
+        checkDayChange();
+        loadHistory();
+        loadCategories();
+        updateCounter();
+        loadWeekly();
+    };
+
+    const counterEl = document.getElementById("counter");
+    const keyboardEl = document.getElementById("keyboard");
+    const keyboardContainer = document.getElementById("keyboardContainer");
+    const historyEl = document.getElementById("historyList");
+    const weeklyEl = document.getElementById("weeklyList");
+    const categoriesEl = document.getElementById("categories");
+    const categoryListEl = document.getElementById("categoryList");
+    const inputDisplay = document.getElementById("inputDisplay");
+    const confirmBtn = document.getElementById("confirmBtn");
+    const progressCircle = document.querySelector(".progress");
+    const levelText = document.getElementById("levelText");
+    const sortSelect = document.getElementById("sortSelect");
+
+    const circleLength = 2 * Math.PI * 36;
+    progressCircle.setAttribute("stroke-dasharray", circleLength);
+
+    let currentCategoryId = null;
+    let currentValue = "";
+    let sortOrder = localStorage.getItem("historySort") || "desc";
+    sortSelect.value = sortOrder;
+    sortSelect.onchange = () => {
+        sortOrder = sortSelect.value;
+        localStorage.setItem("historySort", sortOrder);
+        loadHistory();
+    };
+
+    // ===== Проверка смены дня =====
+    function checkDayChange() {
+        const today = new Date().toISOString().slice(0,10);
+        const tx = db.transaction("meta", "readwrite");
+        const store = tx.objectStore("meta");
+        store.get("lastDate").onsuccess = (e) => {
+            const rec = e.target.result;
+            if (!rec || rec.value !== today) {
+                finalizeDay(rec ? rec.value : today);
+                store.put({ key: "lastDate", value: today });
+            }
+        };
+    }
+    function finalizeDay(date) {
+        if (!date) return;
+        let sum = 0;
+        const tx = db.transaction("records", "readonly");
+        tx.objectStore("records").openCursor().onsuccess = (e) => {
+            const cursor = e.target.result;
+            if (cursor) {
+                sum += cursor.value.value;
+                cursor.continue();
+            } else {
+                const level = sum > 0 ? Math.floor(sum/100) : 0;
+                const tx2 = db.transaction("weekly", "readwrite");
+                tx2.objectStore("weekly").put({ date, sum, level });
+                const tx3 = db.transaction("records", "readwrite");
+                tx3.objectStore("records").clear().onsuccess = () => {
+                    loadHistory();
+                    updateCounter();
+                    loadWeekly();
+                };
+            }
+        };
+    }
+
+    // ===== Категории =====
+    function addCategory(name) {
+        const tx = db.transaction("categories", "readwrite");
+        tx.objectStore("categories").add({ name });
+        tx.oncomplete = () => loadCategories();
+    }
+    function updateCategory(id, newName) {
+        const tx = db.transaction("categories", "readwrite");
+        const store = tx.objectStore("categories");
+        store.get(id).onsuccess = (e) => {
+            const cat = e.target.result;
+            cat.name = newName;
+            store.put(cat);
+        };
+        tx.oncomplete = () => { loadCategories(); loadHistory(); };
+    }
+    function deleteCategory(id) {
+        const tx = db.transaction("categories", "readwrite");
+        tx.objectStore("categories").delete(id);
+        tx.oncomplete = () => { loadCategories(); loadHistory(); };
+    }
+    function loadCategories() {
+        categoriesEl.innerHTML = "";
+        const addChip = document.createElement("div");
+        addChip.className = "chip add";
+        addChip.textContent = "+";
+        addChip.onclick = addCategoryPrompt;
+        categoriesEl.appendChild(addChip);
+
+        categoryListEl.innerHTML = "";
+        const tx = db.transaction("categories", "readonly");
+        tx.objectStore("categories").openCursor().onsuccess = (e) => {
+            const cursor = e.target.result;
+            if (cursor) {
+                const cat = cursor.value;
+                const chip = document.createElement("div");
+                chip.className = "chip";
+                chip.textContent = cat.name;
+                chip.onclick = () => { currentCategoryId = cat.id; showKeyboard(); };
+                categoriesEl.appendChild(chip);
+
+                const li = document.createElement("li");
+                li.innerHTML = `<span>${cat.name}</span>`;
+                const actions = document.createElement("div");
+                actions.className = "cat-actions";
+                const editBtn = document.createElement("button");
+                editBtn.textContent = "✎";
+                editBtn.onclick = () => {
+                    const newName = prompt("Новое название:", cat.name);
+                    if (newName) updateCategory(cat.id, newName);
+                };
+                const delBtn = document.createElement("button");
+                delBtn.textContent = "🗑";
+                delBtn.onclick = () => deleteCategory(cat.id);
+                actions.appendChild(editBtn);
+                actions.appendChild(delBtn);
+                li.appendChild(actions);
+                categoryListEl.appendChild(li);
+
+                cursor.continue();
+            }
+        };
+    }
+    function addCategoryPrompt() {
+        const name = prompt("Название категории:");
+        if (name) addCategory(name);
+    }
+
+    // ===== Клавиатура =====
+    function showKeyboard() {
+        keyboardEl.innerHTML = "";
+        keyboardContainer.style.display = "block";
+        inputDisplay.textContent = "";
+        const keys = ["1","2","3","4","5","6","7","8","9","0","-","←"];
+        keys.forEach(k => {
+            const btn = document.createElement("div");
+            btn.className = "key";
+            btn.textContent = k;
+            btn.onclick = () => handleKey(k);
+            keyboardEl.appendChild(btn);
+        });
+        currentValue = "";
+    }
+    function handleKey(k) {
+        if (k === "←") currentValue = currentValue.slice(0,-1);
+        else {
+            if (k === "-" && currentValue.includes("-")) return;
+            currentValue += k;
+        }
+        inputDisplay.textContent = currentValue;
+    }
+    confirmBtn.onclick = () => {
+        if (currentValue) saveRecord(currentCategoryId, parseInt(currentValue));
+        keyboardContainer.style.display = "none";
+        inputDisplay.textContent = "";
+    };
+
+    // ===== Записи =====
+    function saveRecord(categoryId, value) {
+        const tx = db.transaction("records", "readwrite");
+        tx.objectStore("records").add({ categoryId, value, date: new Date().toISOString() });
+        tx.oncomplete = () => { loadHistory(); updateCounter(); };
+    }
+    function updateRecord(id, newValue) {
+        const tx = db.transaction("records", "readwrite");
+        const store = tx.objectStore("records");
+        store.get(id).onsuccess = (e) => {
+            const rec = e.target.result;
+            rec.value = newValue;
+            store.put(rec);
+        };
+        tx.oncomplete = () => { loadHistory(); updateCounter(); };
+    }
+    function deleteRecord(id) {
+        const tx = db.transaction("records", "readwrite");
+        tx.objectStore("records").delete(id);
+        tx.oncomplete = () => { loadHistory(); updateCounter(); };
+    }
+    function loadHistory() {
+        historyEl.innerHTML = "";
+        const records = [];
+        const categoriesMap = {};
+        const txCats = db.transaction("categories", "readonly");
+        txCats.objectStore("categories").openCursor().onsuccess = (e) => {
+            const cursor = e.target.result;
+            if (cursor) {
+                categoriesMap[cursor.value.id] = cursor.value.name;
+                cursor.continue();
+            }
+        };
+        txCats.oncomplete = () => {
+            const tx = db.transaction("records", "readonly");
+            tx.objectStore("records").openCursor().onsuccess = (e) => {
+                const cursor = e.target.result;
+                if (cursor) {
+                    records.push(cursor.value);
+                    cursor.continue();
+                } else {
+                    records.sort((a,b) => {
+                        if (sortOrder === "asc") return new Date(a.date) - new Date(b.date);
+                        else return new Date(b.date) - new Date(a.date);
+                    });
+                    records.forEach(rec => {
+                        const li = document.createElement("li");
+                        const catName = categoriesMap[rec.categoryId] || "❌ Удалено";
+                        const textSpan = document.createElement("span");
+                        textSpan.textContent = `${catName}: ${rec.value}`;
+                        const actions = document.createElement("div");
+                        actions.className = "record-actions";
+                        const editBtn = document.createElement("button");
+                        editBtn.textContent = "✎";
+                        editBtn.onclick = () => {
+                            const newVal = prompt("Новое значение:", rec.value);
+                            if (newVal !== null && newVal.trim() !== "" && !isNaN(newVal)) {
+                                updateRecord(rec.id, parseInt(newVal));
+                            }
+                        };
+                        const delBtn = document.createElement("button");
+                        delBtn.textContent = "🗑";
+                        delBtn.onclick = () => deleteRecord(rec.id);
+                        actions.appendChild(editBtn);
+                        actions.appendChild(delBtn);
+                        li.appendChild(textSpan);
+                        li.appendChild(actions);
+                        historyEl.appendChild(li);
+                    });
+                }
+            };
+        };
+    }
+
+    // ===== Счётчик =====
+    function updateCounter() {
+        let sum = 0;
+        const tx = db.transaction("records", "readonly");
+        tx.objectStore("records").openCursor().onsuccess = (e) => {
+            const cursor = e.target.result;
+            if (cursor) {
+                sum += cursor.value.value;
+                cursor.continue();
+            } else {
+                counterEl.textContent = sum;
+                if (sum > 0) counterEl.style.color = "green";
+                else if (sum < 0) counterEl.style.color = "red";
+                else counterEl.style.color = "black";
+
+                let level = 0, progress = 0;
+                if (sum > 0) {
+                    level = Math.floor(sum / 100);
+                    progress = sum % 100;
+                }
+                const offset = circleLength - (circleLength * progress / 100);
+                progressCircle.setAttribute("stroke-dashoffset", offset);
+                levelText.textContent = level;
+            }
+        };
+    }
+
+    // ===== Недельная история =====
+    function loadWeekly() {
+        weeklyEl.innerHTML = "";
+        const tx = db.transaction("weekly", "readonly");
+        tx.objectStore("weekly").openCursor().onsuccess = (e) => {
+            const cursor = e.target.result;
+            if (cursor) {
+                const rec = cursor.value;
+                const li = document.createElement("li");
+                li.textContent = `${rec.date}: ${rec.sum} (уровень ${rec.level})`;
+                weeklyEl.appendChild(li);
+                cursor.continue();
+            }
+        };
+    }
+
+    // ===== Навигация =====
+    function showScreen(id) {
+        ["screen-main","screen-history","screen-weekly","screen-categories"].forEach(s => {
+            document.getElementById(s).style.display = "none";
+        });
+        document.getElementById(id).style.display = "block";
+        document.querySelectorAll("nav button").forEach(b => b.classList.remove("active"));
+        if (id === "screen-main") document.getElementById("btn-main").classList.add("active");
+        if (id === "screen-history") document.getElementById("btn-history").classList.add("active");
+        if (id === "screen-weekly") document.getElementById("btn-weekly").classList.add("active");
+        if (id === "screen-categories") document.getElementById("btn-categories").classList.add("active");
+    }
+    document.getElementById("btn-main").onclick = () => showScreen("screen-main");
+    document.getElementById("btn-history").onclick = () => showScreen("screen-history");
+    document.getElementById("btn-weekly").onclick = () => showScreen("screen-weekly");
+    document.getElementById("btn-categories").onclick = () => showScreen("screen-categories");
 </script>
 </body>
 </html>
