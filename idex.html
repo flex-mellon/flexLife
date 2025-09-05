@@ -2,19 +2,38 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FlexLife</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+
 </head>
 <body>
 
 
+<div id="score" style="
+    color: blue;
+    font-weight: bold;
+    font-size: xxx-large;
+    font-family: monospace;
+">0</div>
 
-
-
-
-
-
-
-
+<div id="keyboard">
+    <input id="userInput">
+    <button id="keyBackspace" onclick="keyboardInput(this)">⬅</button>
+    <button onclick="keyboardInput(this)">1</button>
+    <button onclick="keyboardInput(this)">2</button>
+    <button onclick="keyboardInput(this)">3</button>
+    <button onclick="keyboardInput(this)">4</button>
+    <button onclick="keyboardInput(this)">5</button>
+    <button onclick="keyboardInput(this)">6</button>
+    <button onclick="keyboardInput(this)">7</button>
+    <button onclick="keyboardInput(this)">8</button>
+    <button onclick="keyboardInput(this)">9</button>
+    <button id="keyMinus" onclick="keyboardInput(this)">-</button>
+    <button onclick="keyboardInput(this)">0</button>
+    <button id="keyDone" onclick="keyboardInput(this)">✔️</button>
+</div>
 
 
 </body>

@@ -1,0 +1,27 @@
+.html, body {
+    padding: 0;
+    margin: 0;
+}
+* {border: 1px solid deeppink}
+
+
+
+#keyboard{
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    padding: 16px 8px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 4px;
+    background-color: lightskyblue;
+}
+#keyboard button {
+    min-height: 40px;
+    background: lightblue;
+}
+#keyboard input {
+    grid-column: span 2;
+}
