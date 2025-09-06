@@ -128,7 +128,7 @@ function refreshUI() {
 
 
 function resetScore() {
-    localStorage.setItem(DB_SCORE, 0)
+    localStorage.clear()
     refreshUI()
 }
 
