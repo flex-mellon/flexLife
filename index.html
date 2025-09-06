@@ -6,11 +6,9 @@
     <title>FlexLife</title>
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
-
 </head>
 <body>
 
-<div class="flex-container">1</div>
 
 <div id="score" style="
     color: blue;
@@ -19,8 +17,21 @@
     font-family: monospace;
 ">0</div>
 
+<button onclick="resetScore()">Clear</button>
+<button onclick="aaa()">DB HISTORY</button>
+
+
+<button id="category" onclick="createCategory()">+</button>
+<div id="categories"></div>
+
+
+<div id="history">
+
+</div>
+
+
 <div id="keyboard">
-    <input id="userInput">
+    <input id="userInput" readonly>
     <button id="keyBackspace" onclick="keyboardInput(this)">⬅</button>
     <button onclick="keyboardInput(this)">1</button>
     <button onclick="keyboardInput(this)">2</button>

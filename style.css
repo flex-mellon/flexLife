@@ -2,7 +2,7 @@
     padding: 0;
     margin: 0;
 }
-* {border: 1px solid deeppink}
+/** {border: 1px solid deeppink}*/
 
 
 
@@ -11,18 +11,26 @@
     bottom: 0;
     right: 0;
     left: 0;
-    padding: 16px 8px;
+    padding: 1rem .5rem;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
-    gap: 4px;
+    gap: .25rem;
     background-color: lightskyblue;
 }
 #keyboard button {
-    min-height: 40px;
+    min-height: 3rem;
     background: lightblue;
 }
 #keyboard input {
     grid-column: span 2;
+}
 
+#category {
+    min-width: 3rem;
+    min-height: 3rem;
+    padding: .5rem;
+    border-radius: 1rem;
+    background: cornflowerblue;
+    color: white;
 }
