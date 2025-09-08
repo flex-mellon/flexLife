@@ -5,27 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Счётчик</title>
     <style>
-        body{font-family:sans-serif;margin:0;display:flex;flex-direction:column;align-items:center;height:100vh}
+        *{box-sizing:border-box}
+        html,body{
+            margin:0;padding:0;width:100%;height:100%;
+            overflow-x:hidden;overflow-y:hidden;
+        }
+        body{font-family:sans-serif;display:flex;flex-direction:column;align-items:center}
+
         #topBar{display:flex;justify-content:space-between;align-items:center;
             width:100%;padding:10px 20px;background:#f0f0f0;font-size:5vw;font-weight:bold}
         #finishBtn{cursor:pointer;font-size:20px;line-height:1;background:none;border:none;padding:0;margin:0;user-select:none}
+
         #counter{font-size:10vw;margin:20px;text-align:center;word-break:break-word;
             font-weight:bold;font-family:monospace;color:gray}
+
         .chips{display:inline-block;background:#eee;padding:5px 15px;
             margin:5px;border-radius:20px;cursor:pointer;font-size:5vw;user-select:none}
-        #chips{display:flex;flex-wrap:wrap;justify-content:center}
-        #historyBox{margin-top:15px;width:90%;max-height:30vh;display:flex;flex-direction:column;border:1px solid #ddd;border-radius:5px}
-        #historyHead{display:flex;justify-content:space-between;align-items:center;
+        #chips{display:flex;flex-wrap:wrap;justify-content:center;max-width:100%}
+
+        #historyBox,#weekBox{margin-top:15px;width:90%;flex:1;display:flex;flex-direction:column;
+            border:1px solid #ddd;border-radius:5px;overflow:hidden;max-height:25vh}
+        #historyHead,#weekHead{display:flex;justify-content:space-between;align-items:center;
             font-size:5vw;padding:5px;flex-shrink:0;background:#f9f9f9;border-bottom:1px solid #ddd}
         #groupBtn{cursor:pointer;font-size:20px;line-height:1;user-select:none}
-        #history{flex:1;overflow-y:auto;font-size:4vw}
+        #history,#week{flex:1;overflow-y:auto;font-size:4vw}
+
         .row{display:flex;justify-content:space-between;padding:5px;border-bottom:1px solid #eee}
+
         #kb{display:none;position:fixed;bottom:0;left:0;width:100%;
-            background:#f5f5f5;padding:10px;box-shadow:0 -2px 5px #ccc}
+            background:#f5f5f5;padding:10px;box-shadow:0 -2px 5px #ccc;z-index:10}
         #kbTop{display:flex;gap:5px;margin-bottom:10px}
         #display{flex:1;padding:10px;font-size:6vw;text-align:right;border:1px solid #ccc;border-radius:5px;background:#fff}
         #del{padding:10px;font-size:6vw}
         .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
+
         button{padding:15px;font-size:6vw;width:100%;border:none;border-radius:8px;background:#ddd}
         button:active{background:#bbb}
     </style>
@@ -50,6 +63,13 @@
     <div id="history"></div>
 </div>
 
+<div id="weekBox">
+    <div id="weekHead">
+        <span>Неделя</span>
+    </div>
+    <div id="week"></div>
+</div>
+
 <div id="kb">
     <div id="kbTop">
         <input id="display" readonly>
@@ -63,12 +83,13 @@
         chips=document.getElementById("chips"),
         kb=document.getElementById("kb"), cur=null, buf="", curName="",
         historyEl=document.getElementById("history"),
+        weekEl=document.getElementById("week"),
         grouped=false; // режим истории
 
     document.getElementById("today").textContent=new Date().toLocaleDateString("ru-RU");
 
     // === IndexedDB init ===
-    let openReq = indexedDB.open("scoreDB",11);
+    let openReq = indexedDB.open("scoreDB",13);
     openReq.onupgradeneeded=e=>{
         db=e.target.result;
         if(!db.objectStoreNames.contains("data")) db.createObjectStore("data",{keyPath:"id"});
@@ -100,6 +121,7 @@
             e.target.result.forEach(r=>renderCat(r.name));
         };
         renderHistoryList();
+        renderWeekList();
     }
     function tx(store,mode="readonly"){ return db.transaction(store,mode).objectStore(store); }
 
@@ -112,6 +134,7 @@
             counter=0; updateCounter(); saveCounter();
             historyEl.innerHTML="";
             db.transaction("history","readwrite").objectStore("history").clear();
+            renderWeekList();
         };
     }
 
@@ -176,6 +199,19 @@
         if(counter>0) counterEl.style.color="green";
         else if(counter<0) counterEl.style.color="red";
         else counterEl.style.color="gray";
+    }
+
+    // === Week List ===
+    function renderWeekList(){
+        weekEl.innerHTML="";
+        tx("week").getAll().onsuccess=e=>{
+            e.target.result.forEach(day=>{
+                let row=document.createElement("div");
+                row.className="row";
+                row.innerHTML=`<span>${day.date}</span><span style="color:${day.counter>0?'green':day.counter<0?'red':'gray'}">${day.counter}</span>`;
+                weekEl.prepend(row);
+            });
+        };
     }
 
     // === Keyboard ===
