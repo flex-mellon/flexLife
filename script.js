@@ -9,7 +9,6 @@ const DB_HISTORY = "today_history"
 
 //region JS variables
 let jsScore = 0;
-let jsCategories = null;
 let jsSelectedCategory = 0;
 //endregion
 
@@ -27,6 +26,21 @@ function createCategory() {
     localStorage.setItem(DB_CATEGORIES, JSON.stringify(cats))
     refreshUI()
 
+}
+
+function clickCategory(chips) {
+    // in value of <button> I put id of category
+    let id = parseInt(chips.value)
+
+    // category 0 use for creating a new one
+    if(id === 0){
+        createCategory()
+    }
+
+    // other id means select category
+    else {
+        selectCategory(chips)
+    }
 }
 
 function selectCategory(element) {
@@ -88,15 +102,21 @@ function addNewRow(score) {
     refreshUI()
 }
 
-function aaa(){
+function debugHistory(){
     alert(
         localStorage.getItem(DB_HISTORY)
     )
 }
 
+
+function renderCategoriesChips(index, name) {
+    return `<button onclick="clickCategory(this)" value=${index} id=category>${name}</button>`
+}
+
+
 function refreshUI() {
     jsScore = localStorage.getItem(DB_SCORE)
-    jsCategories = JSON.parse(localStorage.getItem(DB_CATEGORIES))
+    let categories = JSON.parse(localStorage.getItem(DB_CATEGORIES))
 
     let scoreUI = document.getElementById("score");
     let userInput = document.getElementById("userInput");
@@ -107,10 +127,18 @@ function refreshUI() {
 
     let divCats = document.getElementById("categories");
     divCats.innerHTML = "";
-    jsCategories.forEach((item, index) => {
-        if (item !== "") divCats.innerHTML +=
-            `<button onclick="selectCategory(this)" value=${index} id=category>${item}</button>`
-    })
+
+    if (categories !== String) {
+        categories.forEach((name, index) => {
+            if (name !== "") divCats.innerHTML += renderCategoriesChips(index, name)
+        })
+    }
+    else {
+        divCats.innerHTML = renderCategoriesChips(categories[0][0], categories[0][1]);
+    }
+
+
+
 
     keyboardHide()
 
@@ -120,7 +148,7 @@ function refreshUI() {
     let history = JSON.parse(localStorage.getItem(DB_HISTORY))
     history.forEach(item => {
         let row = JSON.parse(item)
-        htmlHistory.innerHTML += `<div>${jsCategories[row[0]]} - ${row[1]}</div>`
+        htmlHistory.innerHTML += `<div>${categories[row[0]]} - ${row[1]}</div>`
     })
 
 
@@ -139,7 +167,7 @@ window.onload = function () {
     let history = localStorage.getItem(DB_HISTORY)
 
     if (score === null) localStorage.setItem(DB_SCORE, 0)
-    if (categories === null) localStorage.setItem(DB_CATEGORIES, JSON.stringify(['Other']))
+    if (categories === null) localStorage.setItem(DB_CATEGORIES, JSON.stringify(['+']))
     if (history === null) localStorage.setItem(DB_HISTORY, JSON.stringify([]))
 
 

@@ -27,6 +27,7 @@
 }
 
 #category {
+    margin: .5rem;
     min-width: 3rem;
     min-height: 3rem;
     padding: .5rem;
